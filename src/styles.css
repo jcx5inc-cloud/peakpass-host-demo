@@ -446,12 +446,49 @@ button {
   font-weight: 900;
 }
 
+.question-card-active {
+  border-color: rgba(103, 232, 249, 0.4);
+  color: #cffafe;
+  background: rgba(103, 232, 249, 0.14);
+}
+
 .answer-card {
   padding: 22px;
   background: rgba(2, 6, 23, 0.78);
 }
 
 .answer-card p {
+  color: var(--soft);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.concierge-recommendation {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  border-radius: 20px;
+  background: rgba(103, 232, 249, 0.09);
+}
+
+.concierge-label {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.concierge-title {
+  margin-top: 8px;
+  color: white;
+  font-size: 20px;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+.concierge-recommendation p {
+  margin: 10px 0 0;
   color: var(--soft);
   font-size: 15px;
   line-height: 1.65;
