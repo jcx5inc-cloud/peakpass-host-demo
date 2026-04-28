@@ -367,13 +367,32 @@ export default function App() {
         <Phone screen={screen} setScreen={setScreen} />
 
         <div className="side-card">
-          <div className="side-label">What this replaces</div>
+          <div className="side-label">Why hosts will want this</div>
           <ul>
-            <li>Printed binders</li>
-            <li>Repeated Wi-Fi questions</li>
-            <li>Long check-in messages</li>
-            <li>Random local recommendations</li>
-            <li>Untracked guest service requests</li>
+            <li>
+              Makes your rental feel instantly more premium the moment guests
+              walk in.
+            </li>
+            <li>
+              Turns scattered texts, binders, and house rules into one polished
+              guest experience.
+            </li>
+            <li>
+              Answers the repetitive questions hosts get every stay before
+              guests ever need to ask.
+            </li>
+            <li>
+              Gives guests live local guidance instead of a stale list of
+              restaurant recommendations.
+            </li>
+            <li>
+              Helps guests book trusted local services directly from the
+              property experience.
+            </li>
+            <li>
+              Creates a new way to add guest value without adding more work for
+              the host.
+            </li>
           </ul>
         </div>
       </section>
