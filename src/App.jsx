@@ -17,10 +17,30 @@ const houseItems = [
 ];
 
 const perks = [
-  ["❄️", "15% off ski rental delivery", "Summit Gear Drop", "Delivered before first chair"],
-  ["👨‍🍳", "Free champagne with private chef", "Alpine Table Co.", "Dinner in the unit, no cleanup"],
-  ["🚙", "$25 off airport transfer", "PeakRide Shuttle", "Denver airport to Breck"],
-  ["💆", "10% off in-home massage", "Altitude Recovery Spa", "Therapist comes to you"],
+  [
+    "❄️",
+    "15% off ski rental delivery",
+    "Summit Gear Drop",
+    "Delivered before first chair",
+  ],
+  [
+    "👨‍🍳",
+    "Free champagne with private chef",
+    "Alpine Table Co.",
+    "Dinner in the unit, no cleanup",
+  ],
+  [
+    "🚙",
+    "$25 off airport transfer",
+    "PeakRide Shuttle",
+    "Denver airport to Breck",
+  ],
+  [
+    "💆",
+    "10% off in-home massage",
+    "Altitude Recovery Spa",
+    "Therapist comes to you",
+  ],
 ];
 
 const services = [
@@ -97,7 +117,11 @@ function WelcomeScreen({ setScreen }) {
 
       <div className="quick-grid">
         {quickLinks.map(([key, icon, title, subtitle]) => (
-          <button key={key} onClick={() => setScreen(key)} className="quick-card">
+          <button
+            key={key}
+            onClick={() => setScreen(key)}
+            className="quick-card"
+          >
             <div className="quick-icon">{icon}</div>
             <div className="quick-title">{title}</div>
             <div className="quick-subtitle">{subtitle}</div>
@@ -128,28 +152,86 @@ function HouseScreen() {
 }
 
 function TonightScreen() {
-  const moves = [
-    "Snow starts after 6 PM — stay walkable tonight.",
-    "Best move: early dinner, après nearby, hot tub after 8.",
-    "One massage slot and one private chef slot still open.",
+  const livePicks = [
+    {
+      time: "4:30 PM",
+      title: "Golden-hour Main Street walk",
+      detail: "Low effort, high reward before the snow moves in.",
+      badge: "Best first move",
+      icon: "🌄",
+    },
+    {
+      time: "5:45 PM",
+      title: "Après close to downtown",
+      detail: "Stay walkable tonight. Roads get slower after dark.",
+      badge: "Guest favorite",
+      icon: "🍸",
+    },
+    {
+      time: "6:30 PM",
+      title: "Last-minute dinner opening",
+      detail: "A group-friendly table is still realistic if booked early.",
+      badge: "Limited",
+      icon: "🍽️",
+    },
+    {
+      time: "8:15 PM",
+      title: "In-home massage window",
+      detail: "One recovery slot open after dinner.",
+      badge: "Premium add-on",
+      icon: "💆",
+    },
   ];
 
   return (
-    <div className="feature-panel">
-      <div className="eyebrow">Tonight’s Best Moves</div>
-      <h3>Live recommendations, not a static guide.</h3>
+    <div className="tonight-premium">
+      <div className="tonight-head">
+        <div>
+          <div className="eyebrow">Live today in Breckenridge</div>
+          <h3>Tonight’s Best Moves</h3>
+          <p>
+            Weather-aware recommendations, local availability, and a simple plan
+            guests can actually follow.
+          </p>
+        </div>
 
-      <div className="stack">
-        {moves.map((move, index) => (
-          <div key={move} className="move-card">
-            <strong>{index + 1}.</strong> {move}
+        <div className="weather-chip">
+          <div>❄️</div>
+          <span>Snow after 6</span>
+        </div>
+      </div>
+
+      <div className="perfect-plan">
+        <div className="plan-label">Perfect plan</div>
+        <div className="plan-title">
+          Stay walkable: après → early dinner → hot tub or massage.
+        </div>
+        <p>
+          PeakPass keeps the night easy, local, and low-stress so guests do not
+          waste time guessing or driving around.
+        </p>
+      </div>
+
+      <div className="live-picks">
+        {livePicks.map((pick) => (
+          <div key={pick.title} className="live-pick-card">
+            <div className="pick-icon">{pick.icon}</div>
+
+            <div className="pick-main">
+              <div className="pick-time">{pick.time}</div>
+              <div className="pick-title">{pick.title}</div>
+              <div className="pick-detail">{pick.detail}</div>
+            </div>
+
+            <div className="pick-badge">{pick.badge}</div>
           </div>
         ))}
       </div>
 
-      <button className="premium-cta">
-        Claim 15% off ski rental delivery
-      </button>
+      <div className="tonight-actions">
+        <button className="secondary-action">Build my night</button>
+        <button className="primary-action">Book open slots</button>
+      </div>
     </div>
   );
 }
