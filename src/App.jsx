@@ -175,13 +175,30 @@ function PerksScreen() {
 }
 
 function ConciergeScreen() {
-  const questions = [
-    "Where should 8 guys go tonight for dinner and drinks?",
-    "What should we do if we don’t ski tomorrow?",
-    "Can rentals come before 8 AM?",
-  ];
+  const answers = {
+    "Where should 8 guys go tonight for dinner and drinks?": {
+      title: "Group dinner + après plan",
+      answer:
+        "For 8 guys, keep it walkable and group-friendly. Start with après near Main Street, book an early casual dinner where a larger table is realistic, then move to a bar close enough that nobody needs to drive. Best move: dinner first, drinks second, shuttle only if you’re leaving downtown.",
+      actions: ["Show group dinner spots", "Find après nearby"],
+    },
+    "What should we do if we don’t ski tomorrow?": {
+      title: "No-ski mountain day",
+      answer:
+        "Make it feel like a real mountain day without touching a chairlift. Start with coffee and a Main Street walk, choose either snowmobiling or spa depending on the group’s energy, then finish with an early dinner or private chef back at the property. If the weather is rough, I’d keep everything walkable and indoor-heavy.",
+      actions: ["Build no-ski itinerary", "Check spa openings"],
+    },
+    "Can rentals come before 8 AM?": {
+      title: "Ski rental delivery",
+      answer:
+        "Yes — the easiest setup is ski rental delivery to the property the night before or early morning. Guests avoid the rental shop line, and families/groups can handle boots, helmets, skis, and boards in one order. I’d request delivery tonight so gear is ready before first chair.",
+      actions: ["Request rental delivery", "Claim 15% off"],
+    },
+  };
 
+  const questions = Object.keys(answers);
   const [question, setQuestion] = useState(questions[0]);
+  const current = answers[question];
 
   return (
     <div className="stack">
@@ -189,7 +206,10 @@ function ConciergeScreen() {
         <button
           key={q}
           onClick={() => setQuestion(q)}
-          className="question-card"
+          className={cx(
+            "question-card",
+            q === question && "question-card-active"
+          )}
         >
           {q}
         </button>
@@ -198,14 +218,16 @@ function ConciergeScreen() {
       <div className="answer-card">
         <div className="small-muted">Guest asks:</div>
         <div className="answer-question">{question}</div>
-        <p>
-          Best move: stay walkable, avoid driving, and use a vetted local
-          partner. I can show options, book directly, or text the partner now.
-        </p>
+
+        <div className="concierge-recommendation">
+          <div className="concierge-label">PeakPass recommends</div>
+          <div className="concierge-title">{current.title}</div>
+          <p>{current.answer}</p>
+        </div>
 
         <div className="two-buttons">
-          <button className="secondary-action">Show options</button>
-          <button className="primary-action">Book now</button>
+          <button className="secondary-action">{current.actions[0]}</button>
+          <button className="primary-action">{current.actions[1]}</button>
         </div>
       </div>
     </div>
