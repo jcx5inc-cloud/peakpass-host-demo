@@ -10,7 +10,7 @@ const screens = {
 };
 
 const houseItems = [
-  ["Wi-Fi", "RiverMountain214", "Password: PeakPass2026"],
+  ["Wi-Fi", "RiverMountain214", "Password: PeakConcierge2026"],
   ["Parking", "Garage spot #42", "Display pass at all times"],
   ["Check-out", "10:00 AM", "Dishes started, trash out, balcony locked"],
   ["Emergency", "Host + building desk", "Urgent care, locksmith, snow removal"],
@@ -207,8 +207,8 @@ function TonightScreen() {
           Stay walkable: après → early dinner → hot tub or massage.
         </div>
         <p>
-          PeakPass keeps the night easy, local, and low-stress so guests do not
-          waste time guessing or driving around.
+          Peak Concierge keeps the night easy, local, and low-stress so guests
+          do not waste time guessing or driving around.
         </p>
       </div>
 
@@ -302,7 +302,7 @@ function ConciergeScreen() {
         <div className="answer-question">{question}</div>
 
         <div className="concierge-recommendation">
-          <div className="concierge-label">PeakPass recommends</div>
+          <div className="concierge-label">Peak Concierge recommends</div>
           <div className="concierge-title">{current.title}</div>
           <p>{current.answer}</p>
         </div>
@@ -342,7 +342,7 @@ export default function App() {
     <main className="page">
       <header className="demo-header">
         <div>
-          <div className="brand">🏔️ PeakPass Concierge</div>
+          <div className="brand">🏔️ Peak Concierge</div>
           <div className="brand-subtitle">
             Interactive guest experience preview
           </div>
@@ -358,9 +358,9 @@ export default function App() {
           <div className="demo-pill">Host preview</div>
           <h1>See what your guests would experience.</h1>
           <p>
-            This is a sample PeakPass guest concierge. Guests scan one QR code
-            and get house info, local perks, live recommendations, and booking
-            help — all branded to the property.
+            This is a sample Peak Concierge guest experience. Guests scan one QR
+            code and get house info, local perks, live recommendations, and
+            booking help — all branded to the property.
           </p>
         </div>
 
@@ -402,7 +402,7 @@ export default function App() {
           <strong>Want this customized for your property?</strong>
           <span>No app. No hardware. No Airbnb account access.</span>
         </div>
-        <a href="mailto:hello@peakpassconcierge.com">
+        <a href="mailto:hello@peakscreens.com">
           Request my property demo
         </a>
       </footer>
