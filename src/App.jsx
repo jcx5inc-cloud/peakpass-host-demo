@@ -402,7 +402,7 @@ export default function App() {
           <strong>Want this customized for your property?</strong>
           <span>No app. No hardware. No Airbnb account access.</span>
         </div>
-        <a href="mailto:hello@peakscreens.com">
+        <a href="mailto:jimmy@peakscreens.com">
           Request my property demo
         </a>
       </footer>
