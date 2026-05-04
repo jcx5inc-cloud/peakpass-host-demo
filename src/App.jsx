@@ -50,6 +50,15 @@ const services = [
   ["Grocery Stocking", "Custom quote", "Arrive to a full fridge"],
 ];
 
+const suggestedQuestions = [
+  "What is the Wi-Fi?",
+  "What time is checkout?",
+  "Where should 8 guys go tonight?",
+  "What should we do if we don’t ski tomorrow?",
+  "Can ski rentals be delivered before 8 AM?",
+  "Can we book an in-home massage?",
+];
+
 function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -257,61 +266,128 @@ function PerksScreen() {
 }
 
 function ConciergeScreen() {
-  const answers = {
-    "Where should 8 guys go tonight for dinner and drinks?": {
-      title: "Group dinner + après plan",
-      answer:
-        "For 8 guys, keep it walkable and group-friendly. Start with après near Main Street, book an early casual dinner where a larger table is realistic, then move to a bar close enough that nobody needs to drive. Best move: dinner first, drinks second, shuttle only if you’re leaving downtown.",
-      actions: ["Show group dinner spots", "Find après nearby"],
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content:
+        "Hi — I’m your Peak Concierge. Ask me about the house, dinner, ski rentals, transportation, massage, or what to do tonight.",
     },
-    "What should we do if we don’t ski tomorrow?": {
-      title: "No-ski mountain day",
-      answer:
-        "Make it feel like a real mountain day without touching a chairlift. Start with coffee and a Main Street walk, choose either snowmobiling or spa depending on the group’s energy, then finish with an early dinner or private chef back at the property. If the weather is rough, I’d keep everything walkable and indoor-heavy.",
-      actions: ["Build no-ski itinerary", "Check spa openings"],
-    },
-    "Can rentals come before 8 AM?": {
-      title: "Ski rental delivery",
-      answer:
-        "Yes — the easiest setup is ski rental delivery to the property the night before or early morning. Guests avoid the rental shop line, and families/groups can handle boots, helmets, skis, and boards in one order. I’d request delivery tonight so gear is ready before first chair.",
-      actions: ["Request rental delivery", "Claim 15% off"],
-    },
-  };
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const questions = Object.keys(answers);
-  const [question, setQuestion] = useState(questions[0]);
-  const current = answers[question];
+  async function sendMessage(customMessage) {
+    const messageToSend = String(customMessage || input).trim();
+
+    if (!messageToSend || isLoading) return;
+
+    const userMessage = { role: "user", content: messageToSend };
+    const nextMessages = [...messages, userMessage];
+
+    setMessages(nextMessages);
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/concierge", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: messageToSend,
+          history: messages,
+          propertyId: "river-mountain-lodge-214",
+        }),
+      });
+
+      const data = await response.json();
+
+      setMessages([
+        ...nextMessages,
+        {
+          role: "assistant",
+          content:
+            data.answer ||
+            "Best move: I can help with house info, local recommendations, ski rentals, transportation, massage, or dinner plans.",
+        },
+      ]);
+    } catch (error) {
+      setMessages([
+        ...nextMessages,
+        {
+          role: "assistant",
+          content:
+            "I’m having trouble connecting right now, but I can still help with the basics: Wi-Fi is RiverMountain214, checkout is 10:00 AM, and ski rental delivery is the easiest move for groups and families.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    sendMessage();
+  }
 
   return (
-    <div className="stack">
-      {questions.map((q) => (
-        <button
-          key={q}
-          onClick={() => setQuestion(q)}
-          className={cx(
-            "question-card",
-            q === question && "question-card-active"
-          )}
-        >
-          {q}
-        </button>
-      ))}
-
-      <div className="answer-card">
-        <div className="small-muted">Guest asks:</div>
-        <div className="answer-question">{question}</div>
-
-        <div className="concierge-recommendation">
-          <div className="concierge-label">Peak Concierge recommends</div>
-          <div className="concierge-title">{current.title}</div>
-          <p>{current.answer}</p>
+    <div className="concierge-live">
+      <div className="concierge-live-header">
+        <div>
+          <div className="eyebrow">Live concierge</div>
+          <h3>Ask Peak Concierge</h3>
         </div>
-
-        <div className="two-buttons">
-          <button className="secondary-action">{current.actions[0]}</button>
-          <button className="primary-action">{current.actions[1]}</button>
+        <div className="live-dot">
+          <span />
+          Online
         </div>
       </div>
+
+      <div className="suggested-grid">
+        {suggestedQuestions.map((question) => (
+          <button
+            key={question}
+            onClick={() => sendMessage(question)}
+            disabled={isLoading}
+            className="suggested-question"
+          >
+            {question}
+          </button>
+        ))}
+      </div>
+
+      <div className="chat-window">
+        {messages.map((message, index) => (
+          <div
+            key={`${message.role}-${index}`}
+            className={cx(
+              "chat-bubble",
+              message.role === "user" ? "chat-user" : "chat-assistant"
+            )}
+          >
+            {message.content}
+          </div>
+        ))}
+
+        {isLoading && (
+          <div className="chat-bubble chat-assistant typing">
+            Peak Concierge is thinking…
+          </div>
+        )}
+      </div>
+
+      <form onSubmit={handleSubmit} className="chat-form">
+        <input
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          placeholder="Ask about dinner, Wi-Fi, ski rentals, massage..."
+          disabled={isLoading}
+        />
+        <button type="submit" disabled={isLoading || !input.trim()}>
+          Send
+        </button>
+      </form>
     </div>
   );
 }
@@ -402,9 +478,7 @@ export default function App() {
           <strong>Want this customized for your property?</strong>
           <span>No app. No hardware. No Airbnb account access.</span>
         </div>
-        <a href="mailto:jimmy@peakscreens.com">
-          Request my property demo
-        </a>
+        <a href="mailto:hello@peakscreens.com">Request my property demo</a>
       </footer>
     </main>
   );
