@@ -57,6 +57,11 @@ const perks = [
 
 const services = [
   [
+    "Restaurant Help",
+    "Local picks",
+    "Call Ski Tip, Snake River, Bighorn, Nowhere Pizza, or Haywood",
+  ],
+  [
     "Ski Rental Delivery",
     "Partner options",
     "Base Mountain Sports and Elite Ski Delivery",
@@ -71,19 +76,14 @@ const services = [
     "Local service",
     "Summit Home Services / Breckenridge Grocery",
   ],
-  [
-    "Dinner Planning",
-    "Owner picks",
-    "Ski Tip Lodge, Keystone Ranch, Snake River Saloon",
-  ],
 ];
 
 const suggestedQuestions = [
-  "What is the Wi-Fi?",
+  "Help me call some restaurants",
+  "What should we do tonight in Keystone?",
   "Where do we park?",
   "How do we get to the ski slopes?",
-  "What should we do tonight in Keystone?",
-  "What are the best dinner spots nearby?",
+  "What is the Wi-Fi?",
   "What time is checkout?",
   "Where is the hot tub?",
   "What is the door code?",
@@ -93,7 +93,195 @@ const suggestedQuestions = [
   "What should we do if we don’t ski?",
 ];
 
+const restaurants = [
+  {
+    name: "Ski Tip Lodge",
+    phone: "970-496-4950",
+    vibe: "Special occasion / fine dining",
+    bestFor:
+      "Date night, anniversary, parents, or a polished mountain dinner.",
+    note:
+      "Reservations are typically required. Best for guests who want the most elevated Keystone dinner.",
+    query: "Tell me about Ski Tip Lodge",
+  },
+  {
+    name: "Snake River Saloon & Steakhouse",
+    phone: "970-468-2788",
+    vibe: "Classic Keystone steakhouse",
+    bestFor:
+      "Groups, hearty dinner, bar energy, happy hour, and a reliable mountain-town night out.",
+    note:
+      "Strong first call for groups because it is practical, local, and open 7 days according to their site.",
+    query: "Tell me about Snake River Saloon",
+  },
+  {
+    name: "Nowhere Pizza & Pub",
+    phone: "970-485-6974",
+    vibe: "Casual pizza by Keystone Lake",
+    bestFor:
+      "Families, kids, low-effort arrival night, casual group dinner, takeout-style plans.",
+    note:
+      "Best easy choice when the group does not want a formal dinner.",
+    query: "Tell me about Nowhere Pizza",
+  },
+  {
+    name: "Bighorn Bistro & Bar",
+    phone: "970-496-3663",
+    vibe: "Polished but easy",
+    bestFor:
+      "Couples, families, or guests who want a nicer dinner without going too formal.",
+    note:
+      "Located near Keystone Lodge/Lakeside area. Good middle-ground option.",
+    query: "Tell me about Bighorn Bistro",
+  },
+  {
+    name: "Haywood Cafe",
+    phone: "970-262-9300",
+    vibe: "Breakfast / casual lunch",
+    bestFor:
+      "Breakfast, takeout, bloody mary, pancakes, omelets, burgers, and casual daytime food.",
+    note:
+      "Best morning move before skiing or heading out.",
+    query: "Tell me about Haywood Cafe",
+  },
+];
+
+const quickCallActions = restaurants.map((r) => ({
+  label: `Call ${r.name}`,
+  href: `tel:${r.phone.replaceAll("-", "")}`,
+}));
+
 const conciergeKnowledgeBase = [
+  {
+    id: "restaurant-calls",
+    title: "Restaurant calling list",
+    keywords: [
+      "call restaurant",
+      "call restaurants",
+      "help me call",
+      "phone restaurants",
+      "reservation",
+      "reservations",
+      "book dinner",
+      "call dinner",
+      "restaurant phone",
+      "restaurant number",
+      "numbers for restaurants",
+      "make a reservation",
+      "where should i call",
+    ],
+    answer:
+      "Absolutely — here are the best Keystone restaurant calls based on what kind of night you want:\n\n• Ski Tip Lodge — 970-496-4950 — best for a special fine-dining night.\n• Snake River Saloon — 970-468-2788 — best first call for steakhouse comfort, groups, bar energy, and a classic Keystone night.\n• Nowhere Pizza & Pub — 970-485-6974 — best for casual pizza, families, takeout-style plans, or an easy arrival night.\n• Bighorn Bistro & Bar — 970-496-3663 — best for a polished but not overly formal dinner.\n• Haywood Cafe — 970-262-9300 — best for breakfast, brunch, or casual lunch.\n\nBest move: if it is tonight and you have a group, call Snake River first, then Nowhere Pizza as the easy backup. If you want the premium night, call Ski Tip Lodge first.",
+    actions: [
+      { label: "Call Snake River", href: "tel:9704682788" },
+      { label: "Call Ski Tip Lodge", href: "tel:9704964950" },
+      { label: "Call Nowhere Pizza", href: "tel:9704856974" },
+      { label: "Build dinner plan", query: "Plan dinner tonight" },
+    ],
+  },
+  {
+    id: "dinner-tonight",
+    title: "Dinner plan tonight",
+    keywords: [
+      "plan dinner",
+      "dinner tonight",
+      "where should we eat tonight",
+      "eat tonight",
+      "restaurant tonight",
+      "tonight dinner",
+      "best dinner",
+      "food tonight",
+      "where should we go for dinner",
+    ],
+    answer:
+      "Best move tonight depends on your group:\n\n• Premium / special night: Ski Tip Lodge. Call 970-496-4950.\n• Classic Keystone dinner + drinks: Snake River Saloon. Call 970-468-2788.\n• Casual and easy: Nowhere Pizza & Pub. Call 970-485-6974.\n• Polished but not too formal: Bighorn Bistro & Bar. Call 970-496-3663.\n\nIf you are tired from travel or skiing, I would keep it simple: Snake River for a real Keystone night, or Nowhere Pizza if you want low effort.",
+    actions: [
+      { label: "Call Snake River", href: "tel:9704682788" },
+      { label: "Call Nowhere Pizza", href: "tel:9704856974" },
+      { label: "Ask for group dinner", query: "Where should a group go for dinner?" },
+    ],
+  },
+  {
+    id: "group-dinner",
+    title: "Group dinner + drinks",
+    keywords: [
+      "group dinner",
+      "8 guys",
+      "guys",
+      "bachelor",
+      "large group",
+      "big group",
+      "drinks",
+      "bar",
+      "apres",
+      "après",
+      "night out",
+      "boys trip",
+      "where should 8",
+    ],
+    answer:
+      "For a group, the goal is simple logistics: easy call, enough space, good food, and no over-complicated transportation.\n\nBest move:\n1. Call Snake River Saloon first — 970-468-2788. It is the strongest group dinner + drinks option.\n2. Use Nowhere Pizza as the casual backup — 970-485-6974.\n3. If the group wants an elevated dinner, try Ski Tip Lodge — 970-496-4950 — but it is more of a special-occasion plan.\n\nIf you are drinking, stay local or arrange a shuttle. Uber/Lyft can be limited in Keystone.",
+    actions: [
+      { label: "Call Snake River", href: "tel:9704682788" },
+      { label: "Call Nowhere Pizza", href: "tel:9704856974" },
+      { label: "Transportation options", query: "How should we get around tonight?" },
+    ],
+  },
+  {
+    id: "ski-tip",
+    title: "Ski Tip Lodge",
+    keywords: ["ski tip", "fine dining", "fancy dinner", "special dinner", "anniversary"],
+    answer:
+      "Ski Tip Lodge is the premium dinner move in Keystone — best for a special night, date night, parents, anniversary, or a more elevated mountain experience. It is known for a cozy historic setting and a seasonal multi-course style dinner.\n\nCall: 970-496-4950.\n\nBest move: call early. If they are booked, use Keystone Ranch when open, or pivot to Bighorn Bistro for a polished but easier backup.",
+    actions: [
+      { label: "Call Ski Tip Lodge", href: "tel:9704964950" },
+      { label: "Show other dinner picks", query: "What are other dinner options?" },
+    ],
+  },
+  {
+    id: "snake-river",
+    title: "Snake River Saloon",
+    keywords: ["snake river", "steakhouse", "saloon", "steak", "happy hour"],
+    answer:
+      "Snake River Saloon & Steakhouse is the classic Keystone dinner-and-drinks move. Best for groups, steakhouse comfort, happy hour, and a real mountain-town night out.\n\nCall: 970-468-2788.\n\nBest move: if you have a larger group, call before you go. Their site lists the saloon/bar opening at 4 PM, happy hour 4–6 PM, and steakhouse dinner 5–9:30 PM.",
+    actions: [
+      { label: "Call Snake River", href: "tel:9704682788" },
+      { label: "Plan group dinner", query: "Plan group dinner tonight" },
+    ],
+  },
+  {
+    id: "nowhere-pizza",
+    title: "Nowhere Pizza & Pub",
+    keywords: ["nowhere", "pizza", "pub", "casual", "takeout"],
+    answer:
+      "Nowhere Pizza & Pub is the easy casual move — best for families, kids, takeout-style plans, arrival night, or when nobody wants a formal dinner.\n\nCall: 970-485-6974.\n\nBest move: use it as your low-effort backup if nicer restaurants are full or the group wants something simple.",
+    actions: [
+      { label: "Call Nowhere Pizza", href: "tel:9704856974" },
+      { label: "Show dinner picks", query: "Dinner recommendations" },
+    ],
+  },
+  {
+    id: "bighorn",
+    title: "Bighorn Bistro & Bar",
+    keywords: ["bighorn", "big horn", "bistro", "keystone lodge"],
+    answer:
+      "Bighorn Bistro & Bar is the polished but easy dinner option. It is a good middle ground if you want something nicer than pizza but not as formal as Ski Tip Lodge.\n\nCall: 970-496-3663.\n\nBest move: use Bighorn for couples, families, or a calmer dinner near the Keystone Lodge / Lakeside area.",
+    actions: [
+      { label: "Call Bighorn Bistro", href: "tel:9704963663" },
+      { label: "Show dinner picks", query: "Dinner recommendations" },
+    ],
+  },
+  {
+    id: "haywood",
+    title: "Haywood Cafe",
+    keywords: ["haywood", "breakfast", "brunch", "bloody mary", "pancakes", "omelet", "omelette"],
+    answer:
+      "Haywood Cafe is the breakfast and casual lunch move. Best for omelets, pancakes, casual food, and a strong start before skiing or heading out.\n\nCall: 970-262-9300.\n\nBest move: go early on ski mornings. It is the owner-recommended breakfast pick.",
+    actions: [
+      { label: "Call Haywood Cafe", href: "tel:9702629300" },
+      { label: "Plan ski morning", query: "What should we do before skiing?" },
+    ],
+  },
   {
     id: "wifi",
     title: "Wi-Fi",
@@ -107,8 +295,8 @@ const conciergeKnowledgeBase = [
       "connect",
     ],
     answer:
-      "The Wi-Fi network is Wildirishman1074 and the password is wildirishman1074. The guide lists the speed at 1200 Mbps. Best move: take a screenshot now so everyone in your group can connect quickly.",
-    actions: ["Copy Wi-Fi info", "Ask another house question"],
+      "The Wi-Fi network is Wildirishman1074 and the password is wildirishman1074. The guide lists the speed at 1200 Mbps.\n\nBest move: screenshot this so everyone in your group can connect without asking the host.",
+    actions: ["Parking", "TV and streaming"],
   },
   {
     id: "parking",
@@ -126,12 +314,12 @@ const conciergeKnowledgeBase = [
       "extra car",
     ],
     answer:
-      "Parking is available for 2 vehicles max. There are no assigned spaces, so parking is first come, first served. Parking passes are required and must be displayed at all times. They are usually on the kitchen counter, hanging near the door, or on top of the fridge. Trailers and RVs are not permitted. Extra cars can park overnight at the Peru Lift Lot for a nightly fee.",
-    actions: ["Show arrival directions", "Ask about ski access"],
+      "Parking is available for 2 vehicles max. There are no assigned spaces, so parking is first come, first served. Parking passes are required and must be displayed at all times.\n\nWhere passes may be: kitchen counter, hanging near the door, or on top of the fridge.\n\nImportant: trailers and RVs are not permitted. Extra cars can park overnight at the Peru Lift Lot for a nightly fee. Return parking passes at checkout to avoid replacement fees.",
+    actions: ["Arrival directions", "Ski access"],
   },
   {
     id: "checkin",
-    title: "Check-in and arrival",
+    title: "Arrival directions",
     keywords: [
       "check in",
       "check-in",
@@ -147,8 +335,8 @@ const conciergeKnowledgeBase = [
       "what time can we arrive",
     ],
     answer:
-      "Check-in is after 4:00 PM unless early check-in was approved. The address is 373 Wild Irishman Road, Unit 1074, Keystone, CO 80435. When you enter Wild Irishman, drive past the pool and take a right into the parking lot. Then follow the sidewalk left into the building labeled Raven. The unit is on the ground floor, 2nd door on the left. Parking lot coordinates: 39.6042444, -105.9733106.",
-    actions: ["Show parking info", "Ask about door access"],
+      "Check-in is after 4:00 PM unless early check-in was approved.\n\nAddress: 373 Wild Irishman Road, Unit 1074, Keystone, CO 80435.\n\nArrival flow:\n1. Enter Wild Irishman.\n2. Drive past the pool.\n3. Take a right into the parking lot.\n4. Follow the sidewalk left into the building labeled Raven.\n5. The unit is on the ground floor, 2nd door on the left.\n\nParking lot coordinates: 39.6042444, -105.9733106.",
+    actions: ["Door code", "Parking"],
   },
   {
     id: "door-code",
@@ -166,12 +354,15 @@ const conciergeKnowledgeBase = [
       "front door",
     ],
     answer:
-      "This unit uses a smart lock with a reservation-specific code. The code is not stored in this demo. The reservation holder should check the original Vacation Rental Guide link sent by text/email on arrival day. After entering the code, lift the door handle UP to open the door. If you are locked out, call Mountain Vacation Lodging at 970-825-0480. Do not guess lockbox codes.",
-    actions: ["Call MVL", "Show arrival directions"],
+      "This unit uses a smart lock with a reservation-specific code. The code is not stored in this demo.\n\nBest move: the reservation holder should check the original Vacation Rental Guide link sent by text/email on arrival day.\n\nAfter entering the code, lift the door handle UP to open the door. If you are locked out, call Mountain Vacation Lodging at 970-825-0480. Do not guess lockbox codes.",
+    actions: [
+      { label: "Call MVL", href: "tel:9708250480" },
+      "Arrival directions",
+    ],
   },
   {
     id: "checkout",
-    title: "Checkout",
+    title: "Checkout checklist",
     keywords: [
       "checkout",
       "check out",
@@ -184,8 +375,8 @@ const conciergeKnowledgeBase = [
       "departure instructions",
     ],
     answer:
-      "Checkout is by 10:00 AM unless late checkout was approved. Before leaving: dispose of trash/recycling, load and run the dishwasher, clean and put away large dishes, remove perishable/open items from the fridge, turn off lights/electronics/appliances/fireplace, set thermostats to 60 in winter or 70 in warmer seasons, return parking passes/key cards where found, close and lock all doors/windows, leave used beds unmade, place towels in a bathroom, and take all belongings.",
-    actions: ["Show trash info", "Ask about late checkout"],
+      "Checkout is by 10:00 AM unless late checkout was approved.\n\nBefore leaving:\n• Dispose of trash/recycling.\n• Load and run the dishwasher.\n• Clean and put away large dishes/pots/pans.\n• Remove perishable/open items from the fridge.\n• Turn off lights, electronics, appliances, oven/range, and fireplace.\n• Set thermostats to 60 in winter or 70 in spring/summer/fall.\n• Return parking passes, key cards, and extra keys where found.\n• Close and lock all doors/windows.\n• Leave used beds unmade.\n• Leave towels in a bathroom.\n• Take all belongings.",
+    actions: ["Trash", "Late checkout"],
   },
   {
     id: "late-checkout",
@@ -198,8 +389,11 @@ const conciergeKnowledgeBase = [
       "leave later",
     ],
     answer:
-      "Late checkout requests need to be made within 48 hours of departure. Approval is not guaranteed, especially if another guest is checking in the same day. Best move: contact MVL as soon as possible and do not stay past 10:00 AM unless you receive approval.",
-    actions: ["Contact MVL", "Show checkout checklist"],
+      "Late checkout requests need to be made within 48 hours of departure. Approval is not guaranteed, especially if another guest is checking in the same day.\n\nBest move: contact MVL as soon as possible and do not stay past 10:00 AM unless you receive approval.",
+    actions: [
+      { label: "Call MVL", href: "tel:9708250480" },
+      "Checkout checklist",
+    ],
   },
   {
     id: "trash",
@@ -215,8 +409,8 @@ const conciergeKnowledgeBase = [
       "where do we take trash",
     ],
     answer:
-      "Trash and recycling are in the large trash building at the front of the Wild Irishman property. You need the red Keystone amenity key card to access the trash/recycling facility. Do not leave trash outside overnight or next to/on top of full bins because wildlife can be a real issue. If you cannot access the trash building, leave trash inside the unit for the cleaners.",
-    actions: ["Show checkout checklist", "Ask about amenity key"],
+      "Trash and recycling are in the large trash building at the front of the Wild Irishman property. You need the red Keystone amenity key card to access it.\n\nDo not leave trash outside overnight or next to/on top of full bins because wildlife can be a real issue. If you cannot access the trash building, leave trash inside the unit for the cleaners.",
+    actions: ["Checkout checklist", "Amenities"],
   },
   {
     id: "amenities",
@@ -235,8 +429,8 @@ const conciergeKnowledgeBase = [
       "red keystone",
     ],
     answer:
-      "Community amenities include a heated pool, hot tub, sauna, gas grills, picnic area, fire pit, and clubhouse with lounge/restrooms. They are located in the middle of the Wild Irishman property. You need the red Keystone amenity key card from the unit. Typical amenity hours are 10 AM–10 PM, but availability and hours can vary by season or maintenance.",
-    actions: ["Ask about pool hours", "Ask about grills"],
+      "Community amenities include a heated pool, hot tub, sauna, gas grills, picnic area, fire pit, and clubhouse with lounge/restrooms.\n\nThey are located in the middle of the Wild Irishman property. You need the red Keystone amenity key card from the unit. Typical amenity hours are 10 AM–10 PM, but availability and hours can vary by season or maintenance.",
+    actions: ["Trash", "What should we do tonight?"],
   },
   {
     id: "ski-access",
@@ -256,8 +450,8 @@ const conciergeKnowledgeBase = [
       "ski access",
     ],
     answer:
-      "Best move: use the free Summit Stage bus stop in front of Wild Irishman on the Yellow Route. It connects you to Keystone areas like River Run, Mountain House, restaurants, and ski access. If you drive, go early and park at Mountain House near the Peru Lift or the main lot at River Run Base.",
-    actions: ["Ask about ski locker", "Ask about rentals"],
+      "Best move: use the free Summit Stage bus stop in front of Wild Irishman on the Yellow Route. It connects you to Keystone areas like River Run, Mountain House, restaurants, and ski access.\n\nIf you drive, go early and park at Mountain House near the Peru Lift or the main lot at River Run Base. For ski mornings, earlier is always easier.",
+    actions: ["Ski locker", "Ski rentals"],
   },
   {
     id: "ski-locker",
@@ -272,8 +466,8 @@ const conciergeKnowledgeBase = [
       "boots",
     ],
     answer:
-      "Use ski locker #1074. The ski locker key is located in the unit. Please do not bring skis or snowboards into the condo. Also, remove shoes and boots when entering to help protect the floors.",
-    actions: ["Ask about ski access", "Ask about ski rentals"],
+      "Use ski locker #1074. The ski locker key is located in the unit.\n\nPlease do not bring skis or snowboards into the condo. Also, remove shoes and boots when entering to help protect the floors.",
+    actions: ["Ski access", "Ski rentals"],
   },
   {
     id: "ski-rentals",
@@ -291,12 +485,12 @@ const conciergeKnowledgeBase = [
       "delivery",
     ],
     answer:
-      "For ski and snowboard rentals, the guide lists Base Mountain Sports and Elite Ski Delivery as partner options. Best move: delivery is usually easiest for groups and families because you skip the rental shop line and can get skis, boards, boots, and helmets handled together.",
-    actions: ["Request rental help", "Ask about ski access"],
+      "For ski and snowboard rentals, the guide lists Base Mountain Sports and Elite Ski Delivery as partner options.\n\nBest move: use delivery if possible. It is usually easiest for groups and families because you skip the rental shop line and can handle skis, boards, boots, and helmets in one order.",
+    actions: ["Ski access", "Ski locker"],
   },
   {
     id: "transportation",
-    title: "Airport transportation",
+    title: "Transportation",
     keywords: [
       "airport",
       "shuttle",
@@ -312,10 +506,12 @@ const conciergeKnowledgeBase = [
       "uber",
       "lyft",
       "taxi",
+      "get around",
+      "driving",
     ],
     answer:
-      "Airport shuttle options between DIA and Keystone include Summit Express, Epic Mountain Express / Colorado Mountain Express, Fresh Tracks Transportation, and Peak 1 Express. Uber and Lyft may be limited in Keystone depending on season, day, and time. Best move: book airport transportation in advance, especially for groups or winter arrivals.",
-    actions: ["Ask about local bus", "Ask about winter driving"],
+      "Airport shuttle options between DIA and Keystone include Summit Express, Epic Mountain Express / Colorado Mountain Express, Fresh Tracks Transportation, and Peak 1 Express.\n\nUber and Lyft can be limited in Keystone depending on season, day, and time. Best move: book airport transportation in advance, especially for groups or winter arrivals. Around Keystone, use the free Summit Stage when practical.",
+    actions: ["Summit Stage bus", "Winter driving"],
   },
   {
     id: "local-bus",
@@ -330,8 +526,11 @@ const conciergeKnowledgeBase = [
       "route",
     ],
     answer:
-      "The free Summit Stage bus stop is in front of Wild Irishman Condominiums on the Yellow Route. It gives you easy access to Keystone slopes, River Run, Mountain House, restaurants, and resort amenities. The guide notes service from 8 AM–6 PM, with on-call service from 6–10 PM. On-call number: 970-496-4200.",
-    actions: ["Ask about ski access", "Ask about dinner spots"],
+      "The free Summit Stage bus stop is in front of Wild Irishman Condominiums on the Yellow Route. It gives you easy access to Keystone slopes, River Run, Mountain House, restaurants, and resort amenities.\n\nThe guide notes service from 8 AM–6 PM, with on-call service from 6–10 PM. On-call number: 970-496-4200.",
+    actions: [
+      { label: "Call Summit Stage", href: "tel:9704964200" },
+      "Ski access",
+    ],
   },
   {
     id: "restaurants",
@@ -350,30 +549,15 @@ const conciergeKnowledgeBase = [
       "lunch",
       "bistro",
       "saloon",
+      "where should we eat",
     ],
     answer:
-      "Best owner-recommended picks: Ski Tip Lodge for a special fine-dining night, Keystone Ranch for rustic Colorado cuisine and wild game, Snake River Saloon and Steakhouse for a cozy steakhouse feel, No Where Pizza for casual pizza, Bighorn Bistro & Bar for a polished but easy meal, and Haywood Cafe for breakfast or casual lunch.",
-    actions: ["Plan dinner tonight", "Ask about no-ski activities"],
-  },
-  {
-    id: "group-dinner",
-    title: "Group dinner plan",
-    keywords: [
-      "group dinner",
-      "8 guys",
-      "guys",
-      "bachelor",
-      "large group",
-      "big group",
-      "drinks",
-      "bar",
-      "apres",
-      "après",
-      "night out",
+      "Here is the clean Keystone shortlist:\n\n• Ski Tip Lodge — premium special-occasion dinner — 970-496-4950.\n• Snake River Saloon — steakhouse, drinks, groups — 970-468-2788.\n• Nowhere Pizza — casual pizza / easy arrival night — 970-485-6974.\n• Bighorn Bistro — polished but not too formal — 970-496-3663.\n• Haywood Cafe — breakfast / casual lunch — 970-262-9300.\n\nBest move: for tonight, call Snake River first if you want a real dinner, Nowhere Pizza if you want easy, and Ski Tip Lodge if you want special.",
+    actions: [
+      { label: "Call Snake River", href: "tel:9704682788" },
+      { label: "Call Ski Tip Lodge", href: "tel:9704964950" },
+      "Plan dinner tonight",
     ],
-    answer:
-      "Best move for a group: keep the night simple and close to Keystone. Start with an easy après/drink plan, then go to a hearty dinner spot like Snake River Saloon if you want steakhouse comfort or No Where Pizza for a casual group meal. If the group wants a more elevated night, Keystone Ranch or Ski Tip Lodge is the special-occasion move. Book early for larger parties.",
-    actions: ["Show dinner picks", "Ask about transportation"],
   },
   {
     id: "breakfast",
@@ -385,19 +569,23 @@ const conciergeKnowledgeBase = [
       "morning",
       "pancakes",
       "omelet",
+      "omelette",
       "haywood",
     ],
     answer:
-      "For breakfast, Haywood Cafe is the owner-recommended easy win. It has hearty breakfast options like omelets and pancakes, plus sandwiches, burgers, and salads if you want something casual later in the day.",
-    actions: ["Ask about skiing tomorrow", "Ask about coffee setup"],
+      "Best breakfast move: Haywood Cafe. It is the owner-recommended easy win for breakfast, omelets, pancakes, casual lunch, and a good start before skiing.\n\nCall: 970-262-9300.\n\nIf you want to stay in, the unit has a standard drip coffee maker. Guests provide their own coffee and filters, though starter supplies may sometimes be present.",
+    actions: [
+      { label: "Call Haywood Cafe", href: "tel:9702629300" },
+      "Coffee setup",
+    ],
   },
   {
     id: "coffee",
-    title: "Coffee",
+    title: "Coffee setup",
     keywords: ["coffee", "coffee maker", "filters", "drip", "keurig"],
     answer:
-      "The unit has a standard drip coffee maker. Guests need to provide their own coffee and filters, though the unit may sometimes have starter supplies like coffee filters, sugar, spices, and basic kitchen items. Best move: check the kitchen first, then grab anything missing while you’re out.",
-    actions: ["Ask about kitchen", "Ask about groceries"],
+      "The unit has a standard drip coffee maker. Guests need to provide their own coffee and filters, though the unit may sometimes have starter supplies like coffee filters, sugar, spices, and basic kitchen items.\n\nBest move: check the kitchen first, then grab anything missing while you’re out.",
+    actions: ["Groceries", "Kitchen"],
   },
   {
     id: "groceries",
@@ -415,8 +603,8 @@ const conciergeKnowledgeBase = [
       "summit home services",
     ],
     answer:
-      "The guide lists Summit Home Services & Breckenridge Grocery for home services and grocery delivery. The unit also comes with starter supplies, but they may not last the whole stay. Best move: use grocery delivery or make one supply run early if your group needs extra paper goods, snacks, breakfast items, coffee, or drinks.",
-    actions: ["Ask about kitchen supplies", "Ask about restaurants"],
+      "The guide lists Summit Home Services & Breckenridge Grocery for home services and grocery delivery.\n\nThe unit comes with starter supplies, but they may not last the whole stay. Best move: make one early grocery run or use delivery for breakfast items, snacks, drinks, coffee, paper goods, and easy dinners.",
+    actions: ["Kitchen", "Coffee setup"],
   },
   {
     id: "kitchen",
@@ -435,8 +623,8 @@ const conciergeKnowledgeBase = [
       "food processor",
     ],
     answer:
-      "The kitchen is well stocked. It includes a standard drip coffee maker, 2 crockpots, Ninja blender, food processor, air fryer, pots, pans, baking sheets, and dish set for 8+ people. Guests provide their own coffee and filters, though some starter supplies may be present but not guaranteed.",
-    actions: ["Ask about groceries", "Ask about checkout dishes"],
+      "The kitchen is well stocked. It includes a standard drip coffee maker, 2 crockpots, Ninja blender, food processor, air fryer, pots, pans, baking sheets, and dish set for 8+ people.\n\nGuests provide their own coffee and filters, though some starter supplies may be present but not guaranteed.",
+    actions: ["Groceries", "Checkout dishes"],
   },
   {
     id: "fireplace",
@@ -451,8 +639,8 @@ const conciergeKnowledgeBase = [
       "fire pit",
     ],
     answer:
-      "The unit has a wood-burning fireplace. Before starting a fire, open the flue. You can check it by holding a lighter or lit match near the fireplace and watching for the flame to be pulled toward the chimney. Do not leave a fire unattended, always use the built-in screens/doors, and close the flue only after embers are completely cooled. The community fire pit is near the pool and grills.",
-    actions: ["Ask about heating", "Ask about fire safety"],
+      "The unit has a wood-burning fireplace. Before starting a fire, open the flue. You can check it by holding a lighter or lit match near the fireplace and watching for the flame to be pulled toward the chimney.\n\nDo not leave a fire unattended. Always use the built-in screens/doors. Close the flue only after embers are completely cooled. The community fire pit is near the pool and grills.",
+    actions: ["Heating", "Fire safety"],
   },
   {
     id: "heating",
@@ -472,8 +660,8 @@ const conciergeKnowledgeBase = [
       "too cold",
     ],
     answer:
-      "The unit has heated baseboard flooring throughout, with individual thermostats in each room. Start the heat slowly, then increase if needed. Keep personal items and gear at least 5–6 inches away from baseboard heaters. There is no air conditioning, but there are ceiling fans in the master bedroom and portable fans in the bedrooms. In summer, close and lock windows/doors when leaving.",
-    actions: ["Ask about fireplace", "Ask about checkout thermostats"],
+      "The unit has heated baseboard flooring throughout, with individual thermostats in each room. Start the heat slowly, then increase if needed.\n\nKeep personal items and gear at least 5–6 inches away from baseboard heaters. There is no air conditioning, but there are ceiling fans in the master bedroom and portable fans in the bedrooms. In summer, close and lock windows/doors when leaving.",
+    actions: ["Fireplace", "Checkout thermostat"],
   },
   {
     id: "laundry",
@@ -489,8 +677,8 @@ const conciergeKnowledgeBase = [
       "towels",
     ],
     answer:
-      "The unit has a private washer and dryer, and the community also has coin-operated laundry. Do not overload the machines, and empty the lint trap before and after each drying cycle. Laundry soap and fabric softener are provided by the owner.",
-    actions: ["Ask about checkout linens", "Ask about supplies"],
+      "The unit has a private washer and dryer, and the community also has coin-operated laundry.\n\nDo not overload the machines, and empty the lint trap before and after each drying cycle. Laundry soap and fabric softener are provided by the owner.",
+    actions: ["Checkout linens", "Starter supplies"],
   },
   {
     id: "baby-family",
@@ -508,8 +696,8 @@ const conciergeKnowledgeBase = [
       "blow up mattress",
     ],
     answer:
-      "The unit has helpful family items: a pack and play in the back guest bedroom, a booster seat, and a blow-up mattress with sheets. Best move for families: get ski rentals delivered, use the free bus when practical, and keep dinner early and easy.",
-    actions: ["Ask about family activities", "Ask about ski rentals"],
+      "The unit has helpful family items: a pack and play in the back guest bedroom, a booster seat, and a blow-up mattress with sheets.\n\nBest family move: get ski rentals delivered, use the free bus when practical, keep dinner early, and use Keystone Lake / snow tubing / scenic gondola as lower-stress activity options.",
+    actions: ["Family activities", "Ski rentals"],
   },
   {
     id: "entertainment",
@@ -530,8 +718,8 @@ const conciergeKnowledgeBase = [
       "record player",
     ],
     answer:
-      "Cable, YouTube TV, and NFL Sunday Ticket are provided. Each bedroom has a TV and remote. You can sign into your own streaming accounts, but remember to sign out before departure. There are Alexa devices in the kitchen and master bedroom, plus games, books, and vinyl for the record player.",
-    actions: ["Ask about checkout remotes", "Ask about Wi-Fi"],
+      "Cable, YouTube TV, and NFL Sunday Ticket are provided. Each bedroom has a TV and remote.\n\nYou can sign into your own streaming accounts, but remember to sign out before departure. There are Alexa devices in the kitchen and master bedroom, plus games, books, and vinyl for the record player.",
+    actions: ["Wi-Fi", "Checkout checklist"],
   },
   {
     id: "pets",
@@ -547,8 +735,8 @@ const conciergeKnowledgeBase = [
       "esa",
     ],
     answer:
-      "Pets are not permitted in the home or on the premises. Bona fide service animals are permitted as required by law, but they must be disclosed properly so the required service animal form can be handled. Emotional support animals are not considered service animals and are not allowed unless a property is pet-friendly. This property is not pet-friendly.",
-    actions: ["Ask about house rules", "Contact MVL"],
+      "Pets are not permitted in the home or on the premises.\n\nBona fide service animals are permitted as required by law, but they must be disclosed properly so the required service animal form can be handled. Emotional support animals are not considered service animals and are not allowed unless a property is pet-friendly. This property is not pet-friendly.",
+    actions: ["House rules", { label: "Call MVL", href: "tel:9708250480" }],
   },
   {
     id: "smoking",
@@ -565,8 +753,8 @@ const conciergeKnowledgeBase = [
       "balcony",
     ],
     answer:
-      "This is a no-smoking unit. Smoking is prohibited inside and outside the unit, including tobacco, marijuana, vaping devices, incense, and candles. Smoking is not permitted on balconies, in common areas, or in units. Use only designated smoking areas if permitted by the property.",
-    actions: ["Ask about house rules", "Ask about fire safety"],
+      "This is a no-smoking unit. Smoking is prohibited inside and outside the unit, including tobacco, marijuana, vaping devices, incense, and candles.\n\nSmoking is not permitted on balconies, in common areas, or in units. Use only designated smoking areas if permitted by the property.",
+    actions: ["House rules", "Fire safety"],
   },
   {
     id: "quiet-hours",
@@ -580,10 +768,11 @@ const conciergeKnowledgeBase = [
       "large gathering",
       "hoa",
       "rules",
+      "house rules",
     ],
     answer:
-      "No parties or large gatherings are allowed. Quiet hours begin after 10 PM, and community quiet hours are 10 PM–6 AM. Many neighbors may be local residents, so keep noise respectful, especially at night.",
-    actions: ["Ask about house rules", "Ask about checkout"],
+      "No parties or large gatherings are allowed. Quiet hours begin after 10 PM, and community quiet hours are 10 PM–6 AM.\n\nMany neighbors may be local residents, so keep noise respectful, especially at night.",
+    actions: ["Pets", "Smoking"],
   },
   {
     id: "activities",
@@ -612,8 +801,25 @@ const conciergeKnowledgeBase = [
       "mountain biking",
     ],
     answer:
-      "Great Keystone options include skiing/snowboarding, night skiing, snow tubing at Adventure Point, ice skating at Keystone Lake or Dercum Square, scenic gondola rides, mountain biking at Keystone Bike Park, hiking like Loveland Pass Loop or Keystone Gulch Trail, Keystone Ranch Golf Course, horseback/wagon/sleigh rides, festivals, and fly fishing near the Snake River. Best no-ski day: coffee/breakfast, Keystone Lake or scenic walk, spa or snow tubing, then an owner-recommended dinner.",
-    actions: ["Build no-ski day", "Show dinner picks"],
+      "Great Keystone options include skiing/snowboarding, night skiing, snow tubing at Adventure Point, ice skating at Keystone Lake or Dercum Square, scenic gondola rides, mountain biking at Keystone Bike Park, hiking like Loveland Pass Loop or Keystone Gulch Trail, Keystone Ranch Golf Course, horseback/wagon/sleigh rides, festivals, and fly fishing near the Snake River.\n\nBest no-ski day: Haywood Cafe breakfast → Keystone Lake / scenic walk → snow tubing or spa-style downtime → Snake River or Ski Tip dinner.",
+    actions: ["No-ski day plan", "Dinner recommendations"],
+  },
+  {
+    id: "no-ski-day",
+    title: "No-ski day plan",
+    keywords: [
+      "no-ski day",
+      "no ski day",
+      "don't ski tomorrow",
+      "dont ski tomorrow",
+      "not skiing",
+      "non skier",
+      "rest day",
+      "off day",
+    ],
+    answer:
+      "Perfect no-ski Keystone day:\n\n1. Start with Haywood Cafe for breakfast.\n2. Walk Keystone Lake or explore River Run / Lakeside.\n3. Choose one anchor activity: snow tubing at Adventure Point, scenic gondola, ice skating, spa/recovery time, or a relaxed shopping/coffee loop.\n4. Keep dinner easy: Snake River for classic Keystone, Nowhere Pizza for casual, or Ski Tip Lodge for premium.\n\nBest move: do not over-schedule. Keystone is best when the day feels easy.",
+    actions: ["Call Haywood Cafe", "Dinner recommendations"],
   },
   {
     id: "winter-driving",
@@ -631,8 +837,8 @@ const conciergeKnowledgeBase = [
       "driving",
     ],
     answer:
-      "All-wheel drive or 4-wheel drive is not required to access the property, but it is strongly recommended for winter travel and mountain pass conditions. Roads in Keystone to/from the property are generally maintained, but your route may include a mountain pass. Best move: check COtrip before driving and make sure you have good tires.",
-    actions: ["Ask about parking", "Ask about shuttles"],
+      "All-wheel drive or 4-wheel drive is not required to access the property, but it is strongly recommended for winter travel and mountain pass conditions.\n\nRoads in Keystone to/from the property are generally maintained, but your route may include a mountain pass. Best move: check COtrip before driving and make sure you have good tires.",
+    actions: ["Parking", "Transportation"],
   },
   {
     id: "altitude",
@@ -648,8 +854,8 @@ const conciergeKnowledgeBase = [
       "high elevation",
     ],
     answer:
-      "Keystone is high elevation, so take the first day seriously. Drink plenty of water, ease into alcohol and coffee, rest if needed, and start ski days early rather than pushing too hard late in the day. If symptoms feel serious or urgent, seek medical help or call 911.",
-    actions: ["Ask about easy activities", "Ask about emergency"],
+      "Keystone is high elevation, so take the first day seriously. Drink plenty of water, ease into alcohol and coffee, rest if needed, and start ski days early rather than pushing too hard late in the day.\n\nIf symptoms feel serious or urgent, seek medical help or call 911.",
+    actions: ["Easy activities", "Emergency help"],
   },
   {
     id: "wildlife",
@@ -667,8 +873,8 @@ const conciergeKnowledgeBase = [
       "animals",
     ],
     answer:
-      "You may see moose, elk, bears, foxes, skunks, porcupines, or even mountain lions. Always keep a safe distance and never feed wildlife. Moose are especially dangerous if approached. Do not leave food or trash in your car, lock car doors, and keep trash secured.",
-    actions: ["Ask about trash", "Ask about safety"],
+      "You may see moose, elk, bears, foxes, skunks, porcupines, or even mountain lions. Always keep a safe distance and never feed wildlife.\n\nMoose are especially dangerous if approached. Do not leave food or trash in your car, lock car doors, and keep trash secured.",
+    actions: ["Trash", "Safety"],
   },
   {
     id: "emergency",
@@ -690,8 +896,11 @@ const conciergeKnowledgeBase = [
       "contact",
     ],
     answer:
-      "For medical, fire, carbon monoxide, or immediate safety emergencies, call 911 right away. For property issues, lockouts, maintenance, or guest service help, contact Mountain Vacation Lodging at 970-825-0480. MVL also handles after-hours emergency vacation rental issues.",
-    actions: ["Call MVL", "Ask about lockout"],
+      "For medical, fire, carbon monoxide, or immediate safety emergencies, call 911 right away.\n\nFor property issues, lockouts, maintenance, or guest service help, contact Mountain Vacation Lodging at 970-825-0480. MVL also handles after-hours emergency vacation rental issues.",
+    actions: [
+      { label: "Call 911", href: "tel:911" },
+      { label: "Call MVL", href: "tel:9708250480" },
+    ],
   },
   {
     id: "workstations",
@@ -706,8 +915,8 @@ const conciergeKnowledgeBase = [
       "zoom",
     ],
     answer:
-      "The unit includes multiple workstations with monitors, and the Wi-Fi speed is listed at 1200 Mbps. Best move: connect to Wildirishman1074, confirm your setup early, and keep devices charged because cold temperatures can drain batteries faster.",
-    actions: ["Show Wi-Fi", "Ask about tech"],
+      "The unit includes multiple workstations with monitors, and the Wi-Fi speed is listed at 1200 Mbps.\n\nBest move: connect to Wildirishman1074, confirm your setup early, and keep devices charged because cold temperatures can drain batteries faster.",
+    actions: ["Wi-Fi", "TV and entertainment"],
   },
 ];
 
@@ -716,16 +925,28 @@ function cx(...classes) {
 }
 
 function normalize(text) {
-  return String(text || "").toLowerCase();
+  return String(text || "")
+    .toLowerCase()
+    .replace(/[’']/g, "")
+    .replace(/[-/]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function getKeywordScore(message, keywords) {
   const lower = normalize(message);
+
   return keywords.reduce((score, keyword) => {
     const k = normalize(keyword);
     if (!k) return score;
-    if (lower === k) return score + 10;
-    if (lower.includes(k)) return score + Math.max(2, Math.min(8, k.length / 3));
+    if (lower === k) return score + 20;
+    if (lower.includes(k)) return score + Math.max(4, Math.min(14, k.length / 2));
+
+    const words = k.split(" ").filter(Boolean);
+    if (words.length > 1 && words.every((word) => lower.includes(word))) {
+      return score + 8;
+    }
+
     return score;
   }, 0);
 }
@@ -737,8 +958,8 @@ function getConciergeResponse(message) {
     return {
       title: "Peak Concierge",
       answer:
-        "Ask me about Wi-Fi, parking, ski access, checkout, amenities, transportation, restaurants, groceries, or what to do in Keystone.",
-      actions: ["Show Wi-Fi", "Plan my day"],
+        "Ask me about Wi-Fi, parking, ski access, checkout, restaurants, amenities, transportation, groceries, house rules, or what to do in Keystone.",
+      actions: ["Help me call some restaurants", "What should we do tonight?"],
       matched: "default",
     };
   }
@@ -757,16 +978,25 @@ function getConciergeResponse(message) {
   }
 
   if (
+    lower.includes("call") ||
+    lower.includes("phone") ||
+    lower.includes("number")
+  ) {
+    return conciergeKnowledgeBase.find((x) => x.id === "restaurant-calls");
+  }
+
+  if (
     lower.includes("where") ||
     lower.includes("how") ||
     lower.includes("what") ||
-    lower.includes("can")
+    lower.includes("can") ||
+    lower.includes("help")
   ) {
     return {
       title: "Best local move",
       answer:
-        "Best move: I can help with the most common Wild Irishman 1074 questions — Wi-Fi, parking, smart lock access, ski access, amenities, dinner, transportation, checkout, trash, house rules, and Keystone activity planning. Try asking, “Where do we park?” or “What should we do tonight?”",
-      actions: ["Ask about parking", "Ask about tonight"],
+        "I can help with the most common Wild Irishman 1074 questions: restaurant calls, Wi-Fi, parking, door access, ski access, amenities, dinner, transportation, checkout, trash, house rules, and Keystone activity planning.\n\nTry asking: “Help me call some restaurants,” “Where do we park?”, “What should we do tonight?”, or “How do we get to the ski slopes?”",
+      actions: ["Help me call some restaurants", "What should we do tonight?"],
       matched: "help",
     };
   }
@@ -774,10 +1004,82 @@ function getConciergeResponse(message) {
   return {
     title: "Peak Concierge",
     answer:
-      "I can help with property details and local Keystone planning. Try asking about Wi-Fi, parking, ski access, checkout, restaurants, groceries, transportation, hot tub, ski rentals, or no-ski activities.",
-    actions: ["Show house info", "Plan Keystone day"],
+      "I can help with property details and local Keystone planning. Try asking about restaurants, Wi-Fi, parking, ski access, checkout, groceries, transportation, hot tub, ski rentals, or no-ski activities.",
+    actions: ["Help me call some restaurants", "Show house info"],
     matched: "fallback",
   };
+}
+
+function renderAction(action, sendMessage) {
+  if (typeof action === "string") {
+    return (
+      <button
+        key={action}
+        type="button"
+        onClick={() => sendMessage(action)}
+        style={{
+          border: "1px solid rgba(103, 232, 249, 0.22)",
+          borderRadius: 14,
+          padding: "10px 12px",
+          color: "#cffafe",
+          background: "rgba(103, 232, 249, 0.09)",
+          fontSize: 12,
+          fontWeight: 900,
+          textAlign: "left",
+          cursor: "pointer",
+        }}
+      >
+        {action}
+      </button>
+    );
+  }
+
+  if (action?.href) {
+    return (
+      <a
+        key={action.label}
+        href={action.href}
+        style={{
+          border: "1px solid rgba(103, 232, 249, 0.22)",
+          borderRadius: 14,
+          padding: "10px 12px",
+          color: "#020617",
+          background: "linear-gradient(90deg, #67e8f9, #a78bfa)",
+          fontSize: 12,
+          fontWeight: 950,
+          textAlign: "left",
+          textDecoration: "none",
+        }}
+      >
+        {action.label}
+      </a>
+    );
+  }
+
+  if (action?.query) {
+    return (
+      <button
+        key={action.label}
+        type="button"
+        onClick={() => sendMessage(action.query)}
+        style={{
+          border: "1px solid rgba(103, 232, 249, 0.22)",
+          borderRadius: 14,
+          padding: "10px 12px",
+          color: "#cffafe",
+          background: "rgba(103, 232, 249, 0.09)",
+          fontSize: 12,
+          fontWeight: 900,
+          textAlign: "left",
+          cursor: "pointer",
+        }}
+      >
+        {action.label}
+      </button>
+    );
+  }
+
+  return null;
 }
 
 function Phone({ screen, setScreen }) {
@@ -991,26 +1293,30 @@ function PerksScreen() {
 
 function ConciergeScreen() {
   const openingMessage =
-    "Hi — I’m your Peak Concierge for Wild Irishman 1074. Ask me about Wi-Fi, parking, check-in, ski access, amenities, dinner, transportation, house rules, or checkout.";
+    "Hi — I’m your Peak Concierge for Wild Irishman 1074. Ask me to call restaurants, plan tonight, find ski access, explain parking, show Wi-Fi, or walk through checkout.";
 
   const [messages, setMessages] = useState([
     {
       role: "assistant",
       content: openingMessage,
       title: "Welcome",
+      actions: [
+        "Help me call some restaurants",
+        "What should we do tonight in Keystone?",
+      ],
     },
   ]);
   const [input, setInput] = useState("");
 
   const popularTopics = useMemo(
     () => [
-      "Wi-Fi",
+      "Restaurant calls",
+      "Dinner tonight",
       "Parking",
       "Door code",
       "Checkout",
       "Hot tub",
       "Ski access",
-      "Restaurants",
       "Transportation",
     ],
     []
@@ -1046,7 +1352,7 @@ function ConciergeScreen() {
     <div className="concierge-live">
       <div className="concierge-live-header">
         <div>
-          <div className="eyebrow">Internal concierge database</div>
+          <div className="eyebrow">Private concierge demo</div>
           <h3>Ask Peak Concierge</h3>
         </div>
         <div className="live-dot">
@@ -1084,25 +1390,7 @@ function ConciergeScreen() {
 
             {message.actions?.length > 0 && (
               <div style={{ display: "grid", gap: 8, marginTop: 12 }}>
-                {message.actions.map((action) => (
-                  <button
-                    key={action}
-                    type="button"
-                    onClick={() => sendMessage(action)}
-                    style={{
-                      border: "1px solid rgba(103, 232, 249, 0.22)",
-                      borderRadius: 14,
-                      padding: "10px 12px",
-                      color: "#cffafe",
-                      background: "rgba(103, 232, 249, 0.09)",
-                      fontSize: 12,
-                      fontWeight: 900,
-                      textAlign: "left",
-                    }}
-                  >
-                    {action}
-                  </button>
-                ))}
+                {message.actions.map((action) => renderAction(action, sendMessage))}
               </div>
             )}
           </div>
@@ -1113,7 +1401,7 @@ function ConciergeScreen() {
         <input
           value={input}
           onChange={(event) => setInput(event.target.value)}
-          placeholder="Ask about Wi-Fi, ski slopes, dinner, checkout..."
+          placeholder="Ask about restaurants, Wi-Fi, ski slopes, dinner..."
         />
         <button type="submit" disabled={!input.trim()}>
           Send
