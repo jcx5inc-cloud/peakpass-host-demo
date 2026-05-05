@@ -989,6 +989,42 @@ function BookScreen({ bookingSeed }) {
         </p>
       </div>
 
+      <div>
+        <div
+          style={{
+            color: "#67e8f9",
+            fontSize: 10,
+            fontWeight: 950,
+            letterSpacing: ".16em",
+            textTransform: "uppercase",
+            marginBottom: 8,
+          }}
+        >
+          Choose request type
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 8,
+          }}
+        >
+          {bookServices.map((service) => (
+            <button
+              key={service.id}
+              onClick={() => selectService(service)}
+              style={serviceTileStyle(selected.id === service.id)}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                <span style={{ fontSize: 17 }}>{service.icon}</span>
+                <span>{service.title}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div style={bookingCardStyle}>
         {!submitted ? (
           <form onSubmit={submitRequest} style={{ display: "grid", gap: 9 }}>
@@ -1244,42 +1280,6 @@ function BookScreen({ bookingSeed }) {
       >
         <strong style={{ color: "white" }}>What happens next:</strong>{" "}
         {selected.conciergePromise}
-      </div>
-
-      <div>
-        <div
-          style={{
-            color: "#67e8f9",
-            fontSize: 10,
-            fontWeight: 950,
-            letterSpacing: ".16em",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
-          Change request type
-        </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 8,
-          }}
-        >
-          {bookServices.map((service) => (
-            <button
-              key={service.id}
-              onClick={() => selectService(service)}
-              style={serviceTileStyle(selected.id === service.id)}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                <span style={{ fontSize: 17 }}>{service.icon}</span>
-                <span>{service.title}</span>
-              </div>
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );
