@@ -88,7 +88,8 @@ const perks = [
     phone: "970-262-9185",
     code: "PEAK-MARG",
     bestFor: "Mexican dinner",
-    requestNotes: "Dinner request from Dos Locos perk. Guest is interested in Mexican food, tacos, margaritas, and an easy Keystone dinner.",
+    requestNotes:
+      "Dinner request from Dos Locos perk. Guest is interested in Mexican food, tacos, margaritas, and an easy Keystone dinner.",
   },
   {
     id: "grocery",
@@ -103,7 +104,8 @@ const perks = [
     phone: "970-445-8658",
     code: "PEAK-STOCK",
     bestFor: "Late arrival",
-    requestNotes: "Grocery stocking request from Peak Concierge perk. Guest wants arrival groceries, breakfast supplies, snacks, drinks, and essentials.",
+    requestNotes:
+      "Grocery stocking request from Peak Concierge perk. Guest wants arrival groceries, breakfast supplies, snacks, drinks, and essentials.",
   },
   {
     id: "shuttle-epic",
@@ -118,7 +120,8 @@ const perks = [
     phone: "",
     code: "PEAK-RIDE",
     bestFor: "Airport transfer",
-    requestNotes: "Airport shuttle request from Epic Mountain Express perk. Guest needs DIA to Keystone transportation.",
+    requestNotes:
+      "Airport shuttle request from Epic Mountain Express perk. Guest needs DIA to Keystone transportation.",
   },
   {
     id: "summit-express",
@@ -133,7 +136,8 @@ const perks = [
     phone: "",
     code: "PEAK-SUMMIT",
     bestFor: "Group shuttle",
-    requestNotes: "Shared/private shuttle request from Summit Express perk. Guest needs mountain transportation for their group.",
+    requestNotes:
+      "Shared/private shuttle request from Summit Express perk. Guest needs mountain transportation for their group.",
   },
   {
     id: "fresh-tracks",
@@ -148,7 +152,8 @@ const perks = [
     phone: "970-453-7433",
     code: "PEAK-PRIVATE",
     bestFor: "Private ride",
-    requestNotes: "Private airport shuttle request from Fresh Tracks Transportation perk. Guest may need child seats or extra luggage space.",
+    requestNotes:
+      "Private airport shuttle request from Fresh Tracks Transportation perk. Guest may need child seats or extra luggage space.",
   },
   {
     id: "ski-rentals",
@@ -158,12 +163,14 @@ const perks = [
     vendor: "Base Mountain Sports / Elite Ski Delivery",
     value: "Skip the shop line",
     serviceId: "ski-rentals",
-    details: "Best for families and groups who want skis, boards, boots, and helmets handled before the first ski morning.",
+    details:
+      "Best for families and groups who want skis, boards, boots, and helmets handled before the first ski morning.",
     how: "Submit heights, weights, shoe sizes, ability levels, and delivery time.",
     phone: "",
     code: "PEAK-SKI",
     bestFor: "First ski morning",
-    requestNotes: "Ski rental delivery request. Guest wants skis, boards, boots, helmets, and first-morning setup.",
+    requestNotes:
+      "Ski rental delivery request. Guest wants skis, boards, boots, helmets, and first-morning setup.",
   },
   {
     id: "dinner-help",
@@ -178,7 +185,8 @@ const perks = [
     phone: "",
     code: "PEAK-DINE",
     bestFor: "Dinner decisions",
-    requestNotes: "Dinner concierge request. Guest wants help choosing or booking a local restaurant.",
+    requestNotes:
+      "Dinner concierge request. Guest wants help choosing or booking a local restaurant.",
   },
   {
     id: "activities",
@@ -188,12 +196,14 @@ const perks = [
     vendor: "Keystone Activities",
     value: "Custom plan",
     serviceId: "activities",
-    details: "Great for non-skiers, rest days, families, bad weather, or guests who want more than restaurant lists.",
+    details:
+      "Great for non-skiers, rest days, families, bad weather, or guests who want more than restaurant lists.",
     how: "Tell Peak Concierge your group type, energy level, and timing.",
     phone: "",
     code: "PEAK-DAY",
     bestFor: "No-ski day",
-    requestNotes: "Activity planning request. Guest wants a no-ski day, family plan, event ideas, or Keystone activity recommendations.",
+    requestNotes:
+      "Activity planning request. Guest wants a no-ski day, family plan, event ideas, or Keystone activity recommendations.",
   },
 ];
 
@@ -207,7 +217,8 @@ const bookServices = [
     highlight: "Most requested",
     fields: ["Guest count", "Preferred time", "Food vibe"],
     defaultTiming: "Tonight",
-    defaultNotes: "Dinner for our group. Open to steakhouse, pizza, fine dining, or something easy nearby.",
+    defaultNotes:
+      "Dinner for our group. Open to steakhouse, pizza, fine dining, or something easy nearby.",
     conciergePromise: "We narrow the options and route you to the best local fit.",
   },
   {
@@ -219,7 +230,8 @@ const bookServices = [
     highlight: "Arrival upgrade",
     fields: ["Arrival date", "Guest count", "Must-have items"],
     defaultTiming: "Before arrival",
-    defaultNotes: "We would like groceries stocked before or shortly after arrival. Breakfast items, snacks, drinks, and essentials preferred.",
+    defaultNotes:
+      "We would like groceries stocked before or shortly after arrival. Breakfast items, snacks, drinks, and essentials preferred.",
     conciergePromise: "We collect your list and send it to the right local partner.",
   },
   {
@@ -231,7 +243,8 @@ const bookServices = [
     highlight: "Skip the line",
     fields: ["Riders", "Ability levels", "Delivery time"],
     defaultTiming: "Tomorrow morning",
-    defaultNotes: "We need ski or snowboard rental help. Please collect rider info, sizes, ability levels, and preferred delivery time.",
+    defaultNotes:
+      "We need ski or snowboard rental help. Please collect rider info, sizes, ability levels, and preferred delivery time.",
     conciergePromise: "We turn rental chaos into one clean request.",
   },
   {
@@ -243,7 +256,8 @@ const bookServices = [
     highlight: "Mountain transport",
     fields: ["Flight time", "Group size", "Luggage count"],
     defaultTiming: "Arrival day",
-    defaultNotes: "We need shuttle transportation between Denver International Airport and Keystone. Please confirm pickup time, group size, luggage, and private/shared preference.",
+    defaultNotes:
+      "We need shuttle transportation between Denver International Airport and Keystone. Please confirm pickup time, group size, luggage, and private/shared preference.",
     conciergePromise: "We capture the right details so guests are not guessing.",
   },
   {
@@ -255,7 +269,8 @@ const bookServices = [
     highlight: "Curated plan",
     fields: ["Group type", "Energy level", "Preferred time"],
     defaultTiming: "Flexible",
-    defaultNotes: "We want help planning activities in Keystone. Interested in no-ski ideas, family activities, events, gondola, skating, tubing, or easy local plans.",
+    defaultNotes:
+      "We want help planning activities in Keystone. Interested in no-ski ideas, family activities, events, gondola, skating, tubing, or easy local plans.",
     conciergePromise: "We help guests discover what is actually worth doing.",
   },
   {
@@ -267,7 +282,8 @@ const bookServices = [
     highlight: "Fast help",
     fields: ["Issue", "Urgency", "Best contact"],
     defaultTiming: "Now",
-    defaultNotes: "We need help with the property. Please include the issue, urgency, and best contact method.",
+    defaultNotes:
+      "We need help with the property. Please include the issue, urgency, and best contact method.",
     conciergePromise: "We route house-specific questions before they become texts to the host.",
   },
 ];
@@ -640,7 +656,10 @@ function PerksScreen({ startBooking }) {
               border: "1px solid rgba(255,255,255,.12)",
               borderRadius: 999,
               padding: "8px 11px",
-              background: category === cat ? "linear-gradient(90deg,#67e8f9,#a78bfa)" : "rgba(255,255,255,.08)",
+              background:
+                category === cat
+                  ? "linear-gradient(90deg,#67e8f9,#a78bfa)"
+                  : "rgba(255,255,255,.08)",
               color: category === cat ? "#020617" : "white",
               fontWeight: 950,
               whiteSpace: "nowrap",
@@ -654,7 +673,15 @@ function PerksScreen({ startBooking }) {
 
       <div style={miniCard}>
         <div className="eyebrow">Selected perk</div>
-        <div style={{ marginTop: 8, color: "white", fontSize: 20, fontWeight: 950, letterSpacing: "-.04em" }}>
+        <div
+          style={{
+            marginTop: 8,
+            color: "white",
+            fontSize: 20,
+            fontWeight: 950,
+            letterSpacing: "-.04em",
+          }}
+        >
           {selected.icon} {selected.title}
         </div>
         <div style={{ marginTop: 5, color: "#67e8f9", fontWeight: 900, fontSize: 13 }}>
@@ -714,7 +741,10 @@ function PerksScreen({ startBooking }) {
               textAlign: "left",
               border: "1px solid rgba(255,255,255,.12)",
               borderRadius: 18,
-              background: selected.id === perk.id ? "rgba(103,232,249,.14)" : "rgba(255,255,255,.08)",
+              background:
+                selected.id === perk.id
+                  ? "rgba(103,232,249,.14)"
+                  : "rgba(255,255,255,.08)",
               padding: 13,
               color: "white",
               boxShadow: "0 12px 24px rgba(0,0,0,.14)",
@@ -762,7 +792,8 @@ function ConciergeScreen({ startBooking }) {
 
     if (hasAny(text, ["book dinner", "dinner reservation", "reserve dinner"])) {
       startBooking("dinner", {
-        requestNotes: "Dinner request from Ask Concierge. Guest wants help choosing or booking a local dinner option.",
+        requestNotes:
+          "Dinner request from Ask Concierge. Guest wants help choosing or booking a local dinner option.",
       });
       setInput("");
       return;
@@ -770,7 +801,8 @@ function ConciergeScreen({ startBooking }) {
 
     if (hasAny(text, ["book ski", "ski rental", "ski rentals", "rent skis"])) {
       startBooking("ski-rentals", {
-        requestNotes: "Ski rental request from Ask Concierge. Guest wants ski or snowboard rental delivery.",
+        requestNotes:
+          "Ski rental request from Ask Concierge. Guest wants ski or snowboard rental delivery.",
       });
       setInput("");
       return;
@@ -778,7 +810,8 @@ function ConciergeScreen({ startBooking }) {
 
     if (hasAny(text, ["book shuttle", "airport shuttle", "transportation", "ride from airport"])) {
       startBooking("shuttle", {
-        requestNotes: "Airport shuttle request from Ask Concierge. Guest needs transportation between DIA and Keystone.",
+        requestNotes:
+          "Airport shuttle request from Ask Concierge. Guest needs transportation between DIA and Keystone.",
       });
       setInput("");
       return;
@@ -786,7 +819,8 @@ function ConciergeScreen({ startBooking }) {
 
     if (hasAny(text, ["grocery", "groceries", "stock the fridge", "food stocked"])) {
       startBooking("grocery", {
-        requestNotes: "Grocery stocking request from Ask Concierge. Guest wants groceries, snacks, breakfast items, drinks, or essentials.",
+        requestNotes:
+          "Grocery stocking request from Ask Concierge. Guest wants groceries, snacks, breakfast items, drinks, or essentials.",
       });
       setInput("");
       return;
@@ -928,16 +962,21 @@ function BookScreen({ bookingSeed }) {
     boxShadow: "0 14px 30px rgba(0,0,0,.18)",
   };
 
-  const serviceChipStyle = (active) => ({
-    border: active ? "1px solid rgba(103,232,249,.40)" : "1px solid rgba(255,255,255,.12)",
-    borderRadius: 999,
-    padding: "8px 10px",
+  const serviceTileStyle = (active) => ({
+    border: active
+      ? "1px solid rgba(103,232,249,.42)"
+      : "1px solid rgba(255,255,255,.11)",
+    borderRadius: 15,
+    padding: "10px 9px",
+    minHeight: 58,
     color: active ? "#020617" : "white",
-    background: active ? "linear-gradient(90deg,#67e8f9,#a78bfa)" : "rgba(255,255,255,.08)",
+    background: active
+      ? "linear-gradient(90deg,#67e8f9,#a78bfa)"
+      : "rgba(255,255,255,.075)",
     fontWeight: 950,
     fontSize: 11,
     textAlign: "left",
-    whiteSpace: "nowrap",
+    boxShadow: active ? "0 10px 24px rgba(103,232,249,.16)" : "none",
   });
 
   return (
@@ -948,19 +987,6 @@ function BookScreen({ bookingSeed }) {
         <p style={{ color: "#cbd5e1", lineHeight: 1.45, marginBottom: 0, fontSize: 13 }}>
           Dinner, ski rentals, shuttles, groceries, activities, and property support.
         </p>
-      </div>
-
-      <div style={{ display: "flex", gap: 7, overflowX: "auto", paddingBottom: 2 }}>
-        {bookServices.map((service) => (
-          <button
-            key={service.id}
-            onClick={() => selectService(service)}
-            style={serviceChipStyle(selected.id === service.id)}
-          >
-            <span style={{ marginRight: 5 }}>{service.icon}</span>
-            {service.title}
-          </button>
-        ))}
       </div>
 
       <div style={bookingCardStyle}>
@@ -1218,6 +1244,42 @@ function BookScreen({ bookingSeed }) {
       >
         <strong style={{ color: "white" }}>What happens next:</strong>{" "}
         {selected.conciergePromise}
+      </div>
+
+      <div>
+        <div
+          style={{
+            color: "#67e8f9",
+            fontSize: 10,
+            fontWeight: 950,
+            letterSpacing: ".16em",
+            textTransform: "uppercase",
+            marginBottom: 8,
+          }}
+        >
+          Change request type
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 8,
+          }}
+        >
+          {bookServices.map((service) => (
+            <button
+              key={service.id}
+              onClick={() => selectService(service)}
+              style={serviceTileStyle(selected.id === service.id)}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                <span style={{ fontSize: 17 }}>{service.icon}</span>
+                <span>{service.title}</span>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
