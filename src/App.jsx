@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 const screens = {
   welcome: "Welcome",
@@ -92,6 +92,7 @@ const perks = [
     title: "Free margarita with entrée",
     vendor: "Dos Locos",
     value: "Guest perk",
+    serviceId: "dinner",
     details:
       "Great for Mexican food, tacos, margaritas, casual groups, and easy Keystone dinners.",
     how:
@@ -99,6 +100,8 @@ const perks = [
     phone: "970-262-9185",
     code: "PEAK-MARG",
     bestFor: "Mexican dinner",
+    requestNotes:
+      "Dinner request from Dos Locos perk. Guest is interested in Mexican food, tacos, margaritas, and an easy Keystone dinner.",
   },
   {
     id: "grocery",
@@ -107,6 +110,7 @@ const perks = [
     title: "Arrive to a stocked kitchen",
     vendor: "Summit Home Services",
     value: "Grocery delivery",
+    serviceId: "grocery",
     details:
       "Perfect for late arrivals, families, breakfast supplies, snacks, drinks, and avoiding a first-night grocery run.",
     how:
@@ -114,6 +118,8 @@ const perks = [
     phone: "970-445-8658",
     code: "PEAK-STOCK",
     bestFor: "Late arrival",
+    requestNotes:
+      "Grocery stocking request from Peak Concierge perk. Guest wants arrival groceries, breakfast supplies, snacks, drinks, and essentials.",
   },
   {
     id: "shuttle-epic",
@@ -122,6 +128,7 @@ const perks = [
     title: "Book DIA to Keystone shuttle",
     vendor: "Epic Mountain Express",
     value: "Airport transfer",
+    serviceId: "shuttle",
     details:
       "Best for guests flying into Denver who do not want to rent a car or drive mountain passes.",
     how:
@@ -129,6 +136,8 @@ const perks = [
     phone: "",
     code: "PEAK-RIDE",
     bestFor: "Airport transfer",
+    requestNotes:
+      "Airport shuttle request from Epic Mountain Express perk. Guest needs DIA to Keystone transportation.",
   },
   {
     id: "summit-express",
@@ -137,6 +146,7 @@ const perks = [
     title: "Shared or private mountain shuttle",
     vendor: "Summit Express",
     value: "Shared/private ride",
+    serviceId: "shuttle",
     details:
       "Good for airport transfers, private rides, and guests who want reliable mountain transportation.",
     how:
@@ -144,6 +154,8 @@ const perks = [
     phone: "",
     code: "PEAK-SUMMIT",
     bestFor: "Group shuttle",
+    requestNotes:
+      "Shared/private shuttle request from Summit Express perk. Guest needs mountain transportation for their group.",
   },
   {
     id: "fresh-tracks",
@@ -152,6 +164,7 @@ const perks = [
     title: "Private Keystone airport shuttle",
     vendor: "Fresh Tracks Transportation",
     value: "Private shuttle",
+    serviceId: "shuttle",
     details:
       "A strong private transportation option between Denver International Airport and Keystone.",
     how:
@@ -159,6 +172,8 @@ const perks = [
     phone: "970-453-7433",
     code: "PEAK-PRIVATE",
     bestFor: "Private ride",
+    requestNotes:
+      "Private airport shuttle request from Fresh Tracks Transportation perk. Guest may need child seats or extra luggage space.",
   },
   {
     id: "ski-rentals",
@@ -167,6 +182,7 @@ const perks = [
     title: "Ski rental delivery setup",
     vendor: "Base Mountain Sports / Elite Ski Delivery",
     value: "Skip the shop line",
+    serviceId: "ski-rentals",
     details:
       "Best for families and groups who want skis, boards, boots, and helmets handled before the first ski morning.",
     how:
@@ -174,6 +190,8 @@ const perks = [
     phone: "",
     code: "PEAK-SKI",
     bestFor: "First ski morning",
+    requestNotes:
+      "Ski rental delivery request. Guest wants skis, boards, boots, helmets, and first-morning setup.",
   },
   {
     id: "dinner-help",
@@ -182,6 +200,7 @@ const perks = [
     title: "Dinner concierge shortlist",
     vendor: "Peak Concierge Picks",
     value: "Tap-to-call",
+    serviceId: "dinner",
     details:
       "Get the right dinner option fast: Mexican, steakhouse, pizza, fine dining, breakfast, or après.",
     how:
@@ -189,6 +208,8 @@ const perks = [
     phone: "",
     code: "PEAK-DINE",
     bestFor: "Dinner decisions",
+    requestNotes:
+      "Dinner concierge request. Guest wants help choosing or booking a local restaurant.",
   },
   {
     id: "activities",
@@ -197,6 +218,7 @@ const perks = [
     title: "No-ski day planner",
     vendor: "Keystone Activities",
     value: "Custom plan",
+    serviceId: "activities",
     details:
       "Great for non-skiers, rest days, families, bad weather, or guests who want more than restaurant lists.",
     how:
@@ -204,6 +226,8 @@ const perks = [
     phone: "",
     code: "PEAK-DAY",
     bestFor: "No-ski day",
+    requestNotes:
+      "Activity planning request. Guest wants a no-ski day, family plan, event ideas, or Keystone activity recommendations.",
   },
 ];
 
@@ -214,8 +238,14 @@ const bookServices = [
     title: "Dinner Reservation Help",
     subtitle: "Mexican, steakhouse, fine dining, pizza, breakfast, or après",
     price: "Free concierge help",
+    highlight: "Most requested",
     fields: ["Guest count", "Preferred time", "Food vibe"],
     instant: true,
+    defaultTiming: "Tonight",
+    defaultNotes:
+      "Dinner for our group. Open to Mexican, steakhouse, pizza, or something easy nearby.",
+    conciergePromise:
+      "Peak Concierge narrows the options, gives tap-to-call choices, and routes the guest to the best local fit.",
   },
   {
     id: "grocery",
@@ -223,8 +253,14 @@ const bookServices = [
     title: "Grocery Stocking",
     subtitle: "Arrive to snacks, breakfast, drinks, paper goods, and essentials",
     price: "Custom quote",
+    highlight: "Best for late arrivals",
     fields: ["Arrival date", "Guest count", "Must-have items"],
     instant: false,
+    defaultTiming: "Before arrival",
+    defaultNotes:
+      "We would like groceries stocked before or shortly after arrival. Breakfast items, snacks, drinks, and essentials preferred.",
+    conciergePromise:
+      "Peak Concierge collects the guest’s list and sends it to the right local grocery/home services partner.",
   },
   {
     id: "ski-rentals",
@@ -232,8 +268,14 @@ const bookServices = [
     title: "Ski Rental Delivery",
     subtitle: "Skis, boards, boots, helmets, and first-morning setup",
     price: "Partner pricing",
+    highlight: "Skip the rental line",
     fields: ["Riders", "Ability levels", "Delivery time"],
     instant: false,
+    defaultTiming: "Tomorrow morning",
+    defaultNotes:
+      "We need ski or snowboard rental help. Please collect rider info, sizes, ability levels, and preferred delivery time.",
+    conciergePromise:
+      "Peak Concierge turns rental chaos into one clean request before the first ski morning.",
   },
   {
     id: "shuttle",
@@ -241,8 +283,14 @@ const bookServices = [
     title: "Airport Shuttle",
     subtitle: "DIA to Keystone shared or private transportation",
     price: "From vendor",
+    highlight: "Reliable mountain transport",
     fields: ["Flight time", "Group size", "Luggage count"],
     instant: false,
+    defaultTiming: "Arrival day",
+    defaultNotes:
+      "We need shuttle transportation between Denver International Airport and Keystone. Please confirm pickup time, group size, luggage, and private/shared preference.",
+    conciergePromise:
+      "Peak Concierge captures the right details so guests are not guessing which transportation option fits.",
   },
   {
     id: "activities",
@@ -250,8 +298,14 @@ const bookServices = [
     title: "Activity Planning",
     subtitle: "No-ski day, family day, events, gondola, skating, tubing",
     price: "Free concierge help",
+    highlight: "Curated itinerary",
     fields: ["Group type", "Energy level", "Preferred time"],
     instant: true,
+    defaultTiming: "Flexible",
+    defaultNotes:
+      "We want help planning activities in Keystone. Interested in no-ski ideas, family activities, events, gondola, skating, tubing, or easy local plans.",
+    conciergePromise:
+      "Peak Concierge helps guests discover what is actually worth doing during a short stay.",
   },
   {
     id: "property-help",
@@ -259,8 +313,14 @@ const bookServices = [
     title: "Property Help",
     subtitle: "Lockout, parking, hot tub, trash, checkout, amenities",
     price: "Guest support",
+    highlight: "Fast stay help",
     fields: ["Issue", "Urgency", "Best contact"],
     instant: true,
+    defaultTiming: "Now",
+    defaultNotes:
+      "We need help with the property. Please include the issue, urgency, and best contact method.",
+    conciergePromise:
+      "Peak Concierge routes house-specific questions before they become repeated texts to the host.",
   },
 ];
 
@@ -501,7 +561,7 @@ function renderAction(action, sendMessage) {
   );
 }
 
-function Phone({ screen, setScreen }) {
+function Phone({ screen, setScreen, startBooking }) {
   return (
     <div className="phone-shell">
       <div className="phone-screen">
@@ -534,9 +594,9 @@ function Phone({ screen, setScreen }) {
           {screen === "welcome" && <WelcomeScreen setScreen={setScreen} />}
           {screen === "house" && <HouseScreen />}
           {screen === "tonight" && <TonightScreen setScreen={setScreen} />}
-          {screen === "perks" && <PerksScreen setScreen={setScreen} />}
-          {screen === "concierge" && <ConciergeScreen />}
-          {screen === "book" && <BookScreen setScreen={setScreen} />}
+          {screen === "perks" && <PerksScreen startBooking={startBooking} />}
+          {screen === "concierge" && <ConciergeScreen startBooking={startBooking} />}
+          {screen === "book" && <BookScreen startBooking={startBooking} />}
         </div>
       </div>
     </div>
@@ -656,7 +716,7 @@ function TonightScreen({ setScreen }) {
   );
 }
 
-function PerksScreen({ setScreen }) {
+function PerksScreen({ startBooking }) {
   const categories = ["All", "Food", "Arrival", "Transport", "Ski", "Activities"];
   const [category, setCategory] = useState("All");
   const [selected, setSelected] = useState(perks[0]);
@@ -742,7 +802,7 @@ function PerksScreen({ setScreen }) {
               Call {selected.vendor}
             </a>
           ) : (
-            <button style={actionButtonStyle} onClick={() => setScreen("book")}>
+            <button style={actionButtonStyle} onClick={() => startBooking(selected.serviceId, selected)}>
               Start request
             </button>
           )}
@@ -754,6 +814,14 @@ function PerksScreen({ setScreen }) {
             Copy code: {selected.code}
           </button>
         </div>
+
+        <button
+          className="primary-action"
+          style={{ width: "100%", marginTop: 10 }}
+          onClick={() => startBooking(selected.serviceId, selected)}
+        >
+          Request this perk
+        </button>
       </div>
 
       <div className="stack">
@@ -790,7 +858,7 @@ function PerksScreen({ setScreen }) {
   );
 }
 
-function ConciergeScreen() {
+function ConciergeScreen({ startBooking }) {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
@@ -808,6 +876,21 @@ function ConciergeScreen() {
   function sendMessage(customMessage) {
     const text = String(customMessage || input).trim();
     if (!text) return;
+
+    if (hasAny(text, ["book dinner", "dinner reservation"])) {
+      startBooking("dinner", {
+        requestNotes: "Dinner request from Ask Concierge. Guest wants help choosing or booking dinner.",
+      });
+      return;
+    }
+
+    if (hasAny(text, ["book ski", "ski rental", "ski rentals"])) {
+      startBooking("ski-rentals", {
+        requestNotes: "Ski rental request from Ask Concierge. Guest wants ski or snowboard rental delivery.",
+      });
+      return;
+    }
+
     const response = getConciergeResponse(text);
     setMessages((current) => [
       ...current,
@@ -876,15 +959,45 @@ function ConciergeScreen() {
   );
 }
 
-function BookScreen() {
-  const [selected, setSelected] = useState(bookServices[0]);
+function BookScreen({ bookingSeed }) {
+  const [selectedId, setSelectedId] = useState(bookingSeed?.serviceId || "dinner");
+  const selected = bookServices.find((service) => service.id === selectedId) || bookServices[0];
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    timing: "Tonight",
-    notes: "",
+    timing: selected.defaultTiming,
+    groupSize: "",
+    priority: "Best recommendation",
+    notes: selected.defaultNotes,
   });
+
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const service = bookServices.find((item) => item.id === bookingSeed?.serviceId);
+    if (!service) return;
+
+    setSelectedId(service.id);
+    setSubmitted(false);
+    setForm((current) => ({
+      ...current,
+      timing: bookingSeed?.timing || service.defaultTiming,
+      priority: bookingSeed?.priority || "Best recommendation",
+      notes: bookingSeed?.requestNotes || service.defaultNotes,
+    }));
+  }, [bookingSeed]);
+
+  function selectService(service) {
+    setSelectedId(service.id);
+    setSubmitted(false);
+    setForm((current) => ({
+      ...current,
+      timing: service.defaultTiming,
+      priority: "Best recommendation",
+      notes: service.defaultNotes,
+    }));
+  }
 
   function update(key, value) {
     setForm((current) => ({ ...current, [key]: value }));
@@ -895,58 +1008,107 @@ function BookScreen() {
     setSubmitted(true);
   }
 
+  const progressItems = [
+    ["1", "Choose service"],
+    ["2", "Add details"],
+    ["3", "Send request"],
+  ];
+
   return (
     <div className="stack">
       <div className="screen-intro">
-        <div className="eyebrow">Guest commerce layer</div>
+        <div className="eyebrow">Premium booking flow</div>
         <h3>Book trusted local help.</h3>
         <p style={{ color: "#cbd5e1", lineHeight: 1.55, marginBottom: 0 }}>
-          This is where Peak Concierge turns guest intent into restaurant calls,
-          vendor leads, and premium stay support.
+          A guided request experience that turns guest intent into a clean,
+          trackable local lead.
         </p>
       </div>
 
-      <div style={{ display: "grid", gap: 12 }}>
-        {bookServices.map((service) => (
-          <button
-            key={service.id}
-            onClick={() => {
-              setSelected(service);
-              setSubmitted(false);
-            }}
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: 8,
+      }}>
+        {progressItems.map(([number, label], index) => (
+          <div
+            key={label}
             style={{
-              ...miniCard,
-              textAlign: "left",
-              color: "white",
-              background: selected.id === service.id ? "rgba(103,232,249,.14)" : "rgba(255,255,255,.08)",
+              border: "1px solid rgba(103,232,249,.16)",
+              borderRadius: 16,
+              padding: "10px 8px",
+              background: index === 1 ? "rgba(103,232,249,.12)" : "rgba(255,255,255,.07)",
+              textAlign: "center",
             }}
           >
-            <div style={{ display: "flex", gap: 12 }}>
-              <div style={{ fontSize: 30 }}>{service.icon}</div>
-              <div>
-                <div style={{ fontSize: 16, fontWeight: 950 }}>{service.title}</div>
-                <div style={{ marginTop: 5, color: "#cbd5e1", fontSize: 13, lineHeight: 1.4 }}>
-                  {service.subtitle}
-                </div>
-                <div style={{ marginTop: 7, color: "#67e8f9", fontSize: 12, fontWeight: 950 }}>
-                  {service.price}
-                </div>
-              </div>
+            <div style={{
+              width: 24,
+              height: 24,
+              margin: "0 auto 6px",
+              borderRadius: 999,
+              display: "grid",
+              placeItems: "center",
+              background: index === 1 ? "linear-gradient(90deg,#67e8f9,#a78bfa)" : "rgba(255,255,255,.10)",
+              color: index === 1 ? "#020617" : "#cbd5e1",
+              fontSize: 12,
+              fontWeight: 950,
+            }}>
+              {number}
             </div>
-          </button>
+            <div style={{ color: "#cbd5e1", fontSize: 10, fontWeight: 900 }}>
+              {label}
+            </div>
+          </div>
         ))}
       </div>
 
       <div style={miniCard}>
-        <div className="eyebrow">Request selected</div>
-        <div style={{ marginTop: 9, color: "white", fontSize: 23, fontWeight: 950, letterSpacing: "-.04em" }}>
-          {selected.icon} {selected.title}
-        </div>
-        <p style={{ color: "#cbd5e1", fontSize: 14, lineHeight: 1.55 }}>
-          {selected.subtitle}
-        </p>
+        <div className="eyebrow">Selected request</div>
 
-        <div style={{ display: "grid", gap: 8, marginBottom: 14 }}>
+        <div style={{
+          marginTop: 12,
+          padding: 16,
+          borderRadius: 22,
+          border: "1px solid rgba(103,232,249,.22)",
+          background:
+            "linear-gradient(135deg, rgba(103,232,249,.15), rgba(167,139,250,.12))",
+        }}>
+          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+            <div style={{ fontSize: 36 }}>{selected.icon}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ color: "white", fontSize: 22, fontWeight: 950, letterSpacing: "-.045em" }}>
+                {selected.title}
+              </div>
+              <div style={{ marginTop: 5, color: "#cbd5e1", fontSize: 13, lineHeight: 1.45 }}>
+                {selected.subtitle}
+              </div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
+                <span style={{
+                  border: "1px solid rgba(103,232,249,.22)",
+                  borderRadius: 999,
+                  color: "#cffafe",
+                  padding: "6px 9px",
+                  fontSize: 11,
+                  fontWeight: 950,
+                }}>
+                  {selected.price}
+                </span>
+                <span style={{
+                  border: "1px solid rgba(167,139,250,.22)",
+                  borderRadius: 999,
+                  color: "#ddd6fe",
+                  padding: "6px 9px",
+                  fontSize: 11,
+                  fontWeight: 950,
+                }}>
+                  {selected.highlight}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: 8, marginTop: 14 }}>
           {selected.fields.map((field) => (
             <div
               key={field}
@@ -965,43 +1127,146 @@ function BookScreen() {
           ))}
         </div>
 
+        <div style={{
+          marginTop: 14,
+          color: "#cbd5e1",
+          fontSize: 13,
+          lineHeight: 1.55,
+        }}>
+          <strong style={{ color: "white" }}>What happens next:</strong>{" "}
+          {selected.conciergePromise}
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gap: 10 }}>
+        {bookServices.map((service) => (
+          <button
+            key={service.id}
+            onClick={() => selectService(service)}
+            style={{
+              border: "1px solid rgba(255,255,255,.12)",
+              borderRadius: 20,
+              background: selected.id === service.id ? "rgba(103,232,249,.14)" : "rgba(255,255,255,.07)",
+              padding: 14,
+              color: "white",
+              textAlign: "left",
+            }}
+          >
+            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+              <div style={{ fontSize: 26 }}>{service.icon}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 950, fontSize: 15 }}>{service.title}</div>
+                <div style={{ marginTop: 4, color: "#94a3b8", fontSize: 12, lineHeight: 1.35 }}>
+                  {service.subtitle}
+                </div>
+              </div>
+              {selected.id === service.id && (
+                <div style={{
+                  color: "#020617",
+                  background: "linear-gradient(90deg,#67e8f9,#a78bfa)",
+                  borderRadius: 999,
+                  padding: "6px 9px",
+                  fontSize: 10,
+                  fontWeight: 950,
+                }}>
+                  Selected
+                </div>
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <div style={miniCard}>
         {!submitted ? (
-          <form onSubmit={submitRequest} style={{ display: "grid", gap: 10 }}>
+          <form onSubmit={submitRequest} style={{ display: "grid", gap: 12 }}>
+            <div>
+              <div className="eyebrow">Request details</div>
+              <div style={{ color: "white", fontSize: 20, fontWeight: 950, marginTop: 8 }}>
+                Tell us what you need.
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <input
+                style={fieldStyle}
+                value={form.name}
+                onChange={(e) => update("name", e.target.value)}
+                placeholder="Guest name"
+              />
+              <input
+                style={fieldStyle}
+                value={form.phone}
+                onChange={(e) => update("phone", e.target.value)}
+                placeholder="Phone number"
+              />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <select
+                style={fieldStyle}
+                value={form.timing}
+                onChange={(e) => update("timing", e.target.value)}
+              >
+                <option>Now</option>
+                <option>Tonight</option>
+                <option>Tomorrow morning</option>
+                <option>Tomorrow afternoon</option>
+                <option>Before arrival</option>
+                <option>Arrival day</option>
+                <option>This weekend</option>
+                <option>Flexible</option>
+              </select>
+
+              <select
+                style={fieldStyle}
+                value={form.priority}
+                onChange={(e) => update("priority", e.target.value)}
+              >
+                <option>Best recommendation</option>
+                <option>Fastest option</option>
+                <option>Most premium</option>
+                <option>Family friendly</option>
+                <option>Budget friendly</option>
+                <option>Group friendly</option>
+              </select>
+            </div>
+
             <input
               style={fieldStyle}
-              value={form.name}
-              onChange={(e) => update("name", e.target.value)}
-              placeholder="Guest name"
+              value={form.groupSize}
+              onChange={(e) => update("groupSize", e.target.value)}
+              placeholder="Group size, if helpful"
             />
-            <input
-              style={fieldStyle}
-              value={form.phone}
-              onChange={(e) => update("phone", e.target.value)}
-              placeholder="Phone number"
-            />
-            <select
-              style={fieldStyle}
-              value={form.timing}
-              onChange={(e) => update("timing", e.target.value)}
-            >
-              <option>Tonight</option>
-              <option>Tomorrow morning</option>
-              <option>Tomorrow afternoon</option>
-              <option>This weekend</option>
-              <option>Flexible</option>
-            </select>
+
             <textarea
               value={form.notes}
               onChange={(e) => update("notes", e.target.value)}
-              placeholder="What do you need? Example: dinner for 6 around 7 PM, Mexican or steakhouse."
+              placeholder="Example: Dinner for 6 around 7 PM. Mexican or steakhouse."
               style={{
                 ...fieldStyle,
-                minHeight: 96,
+                minHeight: 118,
                 paddingTop: 12,
                 resize: "vertical",
+                lineHeight: 1.45,
               }}
             />
-            <button className="primary-action" type="submit">
+
+            <div style={{
+              border: "1px solid rgba(103,232,249,.18)",
+              borderRadius: 18,
+              background: "rgba(103,232,249,.08)",
+              padding: 14,
+              color: "#cffafe",
+              fontSize: 13,
+              lineHeight: 1.5,
+            }}>
+              <strong>Demo note:</strong> In the live product, this request would
+              route to Peak Concierge, the property manager, or the correct local
+              vendor.
+            </div>
+
+            <button className="primary-action" type="submit" style={{ minHeight: 50 }}>
               Send concierge request
             </button>
           </form>
@@ -1009,35 +1274,67 @@ function BookScreen() {
           <div
             style={{
               border: "1px solid rgba(34,197,94,.25)",
-              borderRadius: 20,
+              borderRadius: 22,
               background: "rgba(34,197,94,.1)",
-              padding: 16,
+              padding: 18,
             }}
           >
-            <div style={{ color: "#bbf7d0", fontWeight: 950, fontSize: 18 }}>
+            <div style={{ color: "#bbf7d0", fontWeight: 950, fontSize: 22 }}>
               Request ready ✓
             </div>
-            <p style={{ color: "#dcfce7", fontSize: 14, lineHeight: 1.55 }}>
-              In the live product, this would send the request to Peak Concierge,
-              the host, or the matching local partner. For this demo, it shows
-              exactly how guest intent becomes a bookable lead.
+            <p style={{ color: "#dcfce7", fontSize: 14, lineHeight: 1.6 }}>
+              This is the moment Peak Concierge turns a guest question into a
+              trackable local request.
             </p>
-            <div style={{ color: "white", fontSize: 13, lineHeight: 1.7 }}>
+
+            <div style={{
+              border: "1px solid rgba(255,255,255,.12)",
+              borderRadius: 18,
+              background: "rgba(2,6,23,.28)",
+              padding: 14,
+              color: "white",
+              fontSize: 13,
+              lineHeight: 1.75,
+            }}>
               <strong>Service:</strong> {selected.title}
               <br />
               <strong>Timing:</strong> {form.timing}
               <br />
+              <strong>Priority:</strong> {form.priority}
+              <br />
+              <strong>Group size:</strong> {form.groupSize || "Not provided"}
+              <br />
               <strong>Guest:</strong> {form.name || "Guest"}
+              <br />
+              <strong>Phone:</strong> {form.phone || "Not provided"}
               <br />
               <strong>Notes:</strong> {form.notes || "No notes added"}
             </div>
-            <button
-              className="secondary-action"
-              style={{ marginTop: 14, width: "100%" }}
-              onClick={() => setSubmitted(false)}
-            >
-              Edit request
-            </button>
+
+            <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
+              <button
+                className="primary-action"
+                onClick={() => setSubmitted(false)}
+              >
+                Edit request
+              </button>
+              <button
+                className="secondary-action"
+                onClick={() => {
+                  setSubmitted(false);
+                  setForm({
+                    name: "",
+                    phone: "",
+                    timing: selected.defaultTiming,
+                    groupSize: "",
+                    priority: "Best recommendation",
+                    notes: selected.defaultNotes,
+                  });
+                }}
+              >
+                Start another request
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -1047,6 +1344,25 @@ function BookScreen() {
 
 export default function App() {
   const [screen, setScreen] = useState("welcome");
+  const [bookingSeed, setBookingSeed] = useState({
+    serviceId: "dinner",
+    requestNotes: bookServices[0].defaultNotes,
+  });
+
+  function startBooking(serviceId = "dinner", source = {}) {
+    const service = bookServices.find((item) => item.id === serviceId) || bookServices[0];
+
+    setBookingSeed({
+      serviceId: service.id,
+      timing: source.timing || service.defaultTiming,
+      priority: source.priority || "Best recommendation",
+      requestNotes: source.requestNotes || service.defaultNotes,
+      sourceId: source.id || "direct",
+      createdAt: Date.now(),
+    });
+
+    setScreen("book");
+  }
 
   return (
     <main className="page">
@@ -1074,7 +1390,11 @@ export default function App() {
           </p>
         </div>
 
-        <Phone screen={screen} setScreen={setScreen} />
+        <Phone
+          screen={screen}
+          setScreen={setScreen}
+          startBooking={startBooking}
+        />
 
         <div className="side-card">
           <div className="side-label">Why hosts will want this</div>
