@@ -21,9 +21,21 @@ const property = {
 
 const houseItems = [
   ["Wi-Fi", "Wildirishman1074", "Password: wildirishman1074"],
-  ["Parking", "2 vehicles max", "First come, first served. Parking passes required."],
-  ["Check-out", "10:00 AM", "Trash out, dishwasher started, thermostats set, doors/windows locked."],
-  ["Emergency", "MVL + 911", "Call 911 for emergencies. MVL: 970-825-0480."],
+  [
+    "Parking",
+    "2 vehicles max",
+    "First come, first served. Parking passes required.",
+  ],
+  [
+    "Check-out",
+    "10:00 AM",
+    "Trash out, dishwasher started, thermostats set, doors/windows locked.",
+  ],
+  [
+    "Emergency",
+    "MVL + 911",
+    "Call 911 for emergencies. MVL: 970-825-0480.",
+  ],
 ];
 
 const restaurants = [
@@ -35,8 +47,17 @@ const restaurants = [
     type: "Mexican",
     vibe: "Tacos, margaritas, casual Keystone dinner",
     bestFor: "Mexican food, margaritas, casual groups, and families",
-    note: "They do not take reservations, so call first and go early if you have a group.",
-    keywords: ["mexican", "tacos", "taco", "burrito", "margarita", "queso", "dos locos"],
+    note:
+      "They do not take reservations, so call first and go early if you have a group.",
+    keywords: [
+      "mexican",
+      "tacos",
+      "taco",
+      "burrito",
+      "margarita",
+      "queso",
+      "dos locos",
+    ],
   },
   {
     id: "snake-river",
@@ -45,9 +66,18 @@ const restaurants = [
     phone: "970-468-2788",
     type: "Dinner + Drinks",
     vibe: "Classic Keystone steakhouse and bar",
-    bestFor: "Groups, dinner, drinks, happy hour, and a real mountain-town night",
+    bestFor:
+      "Groups, dinner, drinks, happy hour, and a real mountain-town night",
     note: "Best first call for groups who want dinner and drinks in one place.",
-    keywords: ["snake river", "steak", "steakhouse", "bar", "drinks", "saloon", "happy hour"],
+    keywords: [
+      "snake river",
+      "steak",
+      "steakhouse",
+      "bar",
+      "drinks",
+      "saloon",
+      "happy hour",
+    ],
   },
   {
     id: "ski-tip",
@@ -56,9 +86,17 @@ const restaurants = [
     phone: "970-496-4950",
     type: "Fine Dining",
     vibe: "Historic, cozy, premium mountain dinner",
-    bestFor: "Date night, parents, anniversary, celebration, or a special dinner",
+    bestFor:
+      "Date night, parents, anniversary, celebration, or a special dinner",
     note: "Call early. This is the premium dinner move.",
-    keywords: ["ski tip", "fancy", "fine dining", "romantic", "special dinner", "date night"],
+    keywords: [
+      "ski tip",
+      "fancy",
+      "fine dining",
+      "romantic",
+      "special dinner",
+      "date night",
+    ],
   },
   {
     id: "nowhere",
@@ -78,7 +116,8 @@ const restaurants = [
     phone: "970-262-9300",
     type: "Breakfast",
     vibe: "Breakfast, brunch, casual lunch",
-    bestFor: "Breakfast before skiing, pancakes, omelets, and casual daytime food",
+    bestFor:
+      "Breakfast before skiing, pancakes, omelets, and casual daytime food",
     note: "Go early on ski mornings.",
     keywords: ["breakfast", "brunch", "coffee", "pancakes", "haywood"],
   },
@@ -356,7 +395,9 @@ function hasAny(text, terms) {
 
 function restaurantByText(text) {
   const lower = normalize(text);
-  return restaurants.find((r) => r.keywords.some((k) => lower.includes(normalize(k))));
+  return restaurants.find((r) =>
+    r.keywords.some((k) => lower.includes(normalize(k)))
+  );
 }
 
 function getConciergeResponse(message) {
@@ -380,7 +421,16 @@ function getConciergeResponse(message) {
     };
   }
 
-  if (hasAny(lower, ["mexican", "taco", "tacos", "margarita", "burrito", "queso"])) {
+  if (
+    hasAny(lower, [
+      "mexican",
+      "taco",
+      "tacos",
+      "margarita",
+      "burrito",
+      "queso",
+    ])
+  ) {
     return {
       title: "Mexican food near Keystone",
       content:
@@ -397,7 +447,17 @@ function getConciergeResponse(message) {
     };
   }
 
-  if (hasAny(lower, ["restaurant", "dinner", "food", "hungry", "eat", "book dinner", "reservation"])) {
+  if (
+    hasAny(lower, [
+      "restaurant",
+      "dinner",
+      "food",
+      "hungry",
+      "eat",
+      "book dinner",
+      "reservation",
+    ])
+  ) {
     return {
       title: "Dinner concierge",
       content:
@@ -417,7 +477,16 @@ function getConciergeResponse(message) {
     };
   }
 
-  if (hasAny(lower, ["ski", "slopes", "snowboard", "river run", "mountain house", "bus"])) {
+  if (
+    hasAny(lower, [
+      "ski",
+      "slopes",
+      "snowboard",
+      "river run",
+      "mountain house",
+      "bus",
+    ])
+  ) {
     return {
       title: "Ski access",
       content:
@@ -488,9 +557,9 @@ function getConciergeResponse(message) {
   return {
     title: "Peak Concierge",
     content:
-      "I can help with dinner, Mexican food, ski access, Wi-Fi, parking, hot tub, groceries, shuttles, activities, checkout, or booking local services.\n\nTry asking: “Where can we get Mexican?” or “Book dinner for me.”",
+      "I can help with dinner, ski access, Wi-Fi, parking, hot tub, groceries, shuttles, activities, checkout, or booking local services.\n\nTry asking: “Help me plan dinner tonight” or “Book airport shuttle help.”",
     actions: [
-      askAction("Mexican food", "Where can we get Mexican food?"),
+      askAction("Plan dinner", "Help me plan dinner tonight"),
       askAction("Book Local", "Book something for me"),
     ],
   };
@@ -561,7 +630,7 @@ function renderAction(action, sendMessage) {
   );
 }
 
-function Phone({ screen, setScreen, startBooking }) {
+function Phone({ screen, setScreen, startBooking, bookingSeed }) {
   return (
     <div className="phone-shell">
       <div className="phone-screen">
@@ -595,8 +664,10 @@ function Phone({ screen, setScreen, startBooking }) {
           {screen === "house" && <HouseScreen />}
           {screen === "tonight" && <TonightScreen setScreen={setScreen} />}
           {screen === "perks" && <PerksScreen startBooking={startBooking} />}
-          {screen === "concierge" && <ConciergeScreen startBooking={startBooking} />}
-          {screen === "book" && <BookScreen startBooking={startBooking} />}
+          {screen === "concierge" && (
+            <ConciergeScreen startBooking={startBooking} />
+          )}
+          {screen === "book" && <BookScreen bookingSeed={bookingSeed} />}
         </div>
       </div>
     </div>
@@ -657,10 +728,30 @@ function HouseScreen() {
 
 function TonightScreen({ setScreen }) {
   const livePicks = [
-    ["🔑", "4:30 PM", "Arrival reset", "Find parking passes, red amenity card, and ski locker key."],
-    ["🌮", "6:00 PM", "Dinner lane", "Mexican at Dos Locos, dinner + drinks at Snake River, easy pizza at Nowhere."],
-    ["♨️", "8:00 PM", "Hot tub reset", "Use the Wild Irishman amenities before quiet hours."],
-    ["⛷️", "Tomorrow AM", "Beat ski rush", "Use Summit Stage or leave early for Mountain House / River Run."],
+    [
+      "🔑",
+      "4:30 PM",
+      "Arrival reset",
+      "Find parking passes, red amenity card, and ski locker key.",
+    ],
+    [
+      "🍽️",
+      "6:00 PM",
+      "Dinner lane",
+      "Let Peak Concierge help choose dinner based on your group and timing.",
+    ],
+    [
+      "♨️",
+      "8:00 PM",
+      "Hot tub reset",
+      "Use the Wild Irishman amenities before quiet hours.",
+    ],
+    [
+      "⛷️",
+      "Tomorrow AM",
+      "Beat ski rush",
+      "Use Summit Stage or leave early for Mountain House / River Run.",
+    ],
   ];
 
   return (
@@ -720,7 +811,8 @@ function PerksScreen({ startBooking }) {
   const categories = ["All", "Food", "Arrival", "Transport", "Ski", "Activities"];
   const [category, setCategory] = useState("All");
   const [selected, setSelected] = useState(perks[0]);
-  const filtered = category === "All" ? perks : perks.filter((p) => p.category === category);
+  const filtered =
+    category === "All" ? perks : perks.filter((p) => p.category === category);
 
   return (
     <div className="stack">
@@ -738,7 +830,10 @@ function PerksScreen({ startBooking }) {
               border: "1px solid rgba(255,255,255,.12)",
               borderRadius: 999,
               padding: "9px 12px",
-              background: category === cat ? "linear-gradient(90deg,#67e8f9,#a78bfa)" : "rgba(255,255,255,.08)",
+              background:
+                category === cat
+                  ? "linear-gradient(90deg,#67e8f9,#a78bfa)"
+                  : "rgba(255,255,255,.08)",
               color: category === cat ? "#020617" : "white",
               fontWeight: 950,
               whiteSpace: "nowrap",
@@ -753,23 +848,33 @@ function PerksScreen({ startBooking }) {
         <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
           <div>
             <div className="eyebrow">Selected perk</div>
-            <div style={{ marginTop: 8, color: "white", fontSize: 23, fontWeight: 950, letterSpacing: "-.04em" }}>
+            <div
+              style={{
+                marginTop: 8,
+                color: "white",
+                fontSize: 23,
+                fontWeight: 950,
+                letterSpacing: "-.04em",
+              }}
+            >
               {selected.icon} {selected.title}
             </div>
             <div style={{ marginTop: 6, color: "#67e8f9", fontWeight: 900 }}>
               {selected.vendor}
             </div>
           </div>
-          <div style={{
-            alignSelf: "start",
-            border: "1px solid rgba(103,232,249,.22)",
-            borderRadius: 999,
-            padding: "7px 10px",
-            color: "#cffafe",
-            fontSize: 11,
-            fontWeight: 950,
-            whiteSpace: "nowrap",
-          }}>
+          <div
+            style={{
+              alignSelf: "start",
+              border: "1px solid rgba(103,232,249,.22)",
+              borderRadius: 999,
+              padding: "7px 10px",
+              color: "#cffafe",
+              fontSize: 11,
+              fontWeight: 950,
+              whiteSpace: "nowrap",
+            }}
+          >
             {selected.value}
           </div>
         </div>
@@ -778,31 +883,38 @@ function PerksScreen({ startBooking }) {
           {selected.details}
         </p>
 
-        <div style={{
-          border: "1px solid rgba(103,232,249,.18)",
-          borderRadius: 18,
-          background: "rgba(103,232,249,.08)",
-          padding: 14,
-          color: "#cffafe",
-          fontSize: 13,
-          lineHeight: 1.5,
-          fontWeight: 750,
-        }}>
+        <div
+          style={{
+            border: "1px solid rgba(103,232,249,.18)",
+            borderRadius: 18,
+            background: "rgba(103,232,249,.08)",
+            padding: 14,
+            color: "#cffafe",
+            fontSize: 13,
+            lineHeight: 1.5,
+            fontWeight: 750,
+          }}
+        >
           <strong>How to use:</strong> {selected.how}
         </div>
 
-        <div style={{
-          marginTop: 12,
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 10,
-        }}>
+        <div
+          style={{
+            marginTop: 12,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 10,
+          }}
+        >
           {selected.phone ? (
             <a href={tel(selected.phone)} style={callButtonStyle}>
               Call {selected.vendor}
             </a>
           ) : (
-            <button style={actionButtonStyle} onClick={() => startBooking(selected.serviceId, selected)}>
+            <button
+              style={actionButtonStyle}
+              onClick={() => startBooking(selected.serviceId, selected)}
+            >
               Start request
             </button>
           )}
@@ -833,7 +945,10 @@ function PerksScreen({ startBooking }) {
               textAlign: "left",
               border: "1px solid rgba(255,255,255,.12)",
               borderRadius: 22,
-              background: selected.id === perk.id ? "rgba(103,232,249,.14)" : "rgba(255,255,255,.08)",
+              background:
+                selected.id === perk.id
+                  ? "rgba(103,232,249,.14)"
+                  : "rgba(255,255,255,.08)",
               padding: 16,
               color: "white",
               boxShadow: "0 14px 34px rgba(0,0,0,.18)",
@@ -843,10 +958,24 @@ function PerksScreen({ startBooking }) {
               <div style={{ fontSize: 30 }}>{perk.icon}</div>
               <div>
                 <div style={{ fontWeight: 950, fontSize: 16 }}>{perk.title}</div>
-                <div style={{ marginTop: 3, color: "#67e8f9", fontSize: 13, fontWeight: 900 }}>
+                <div
+                  style={{
+                    marginTop: 3,
+                    color: "#67e8f9",
+                    fontSize: 13,
+                    fontWeight: 900,
+                  }}
+                >
                   {perk.vendor}
                 </div>
-                <div style={{ marginTop: 5, color: "#cbd5e1", fontSize: 13, lineHeight: 1.4 }}>
+                <div
+                  style={{
+                    marginTop: 5,
+                    color: "#cbd5e1",
+                    fontSize: 13,
+                    lineHeight: 1.4,
+                  }}
+                >
                   Best for: {perk.bestFor}
                 </div>
               </div>
@@ -864,39 +993,72 @@ function ConciergeScreen({ startBooking }) {
       role: "assistant",
       title: "Welcome",
       content:
-        "Hi — I’m your Peak Concierge for Wild Irishman 1074. Ask me about Mexican food, dinner, ski access, Wi-Fi, parking, hot tub, groceries, shuttles, or booking local help.",
+        "Hi — I’m your Peak Concierge for Wild Irishman 1074. Ask me about dinner plans, ski access, Wi-Fi, parking, hot tub, groceries, airport shuttles, no-ski activities, or booking trusted local help.",
       actions: [
-        askAction("Mexican food", "Where can we get Mexican food?"),
-        askAction("Book dinner", "Book dinner for me"),
+        askAction("Plan dinner", "Help me plan dinner tonight"),
+        askAction("Ski access", "How do we get to the ski slopes?"),
+        askAction("No-ski day", "What should we do if we don’t ski?"),
       ],
     },
   ]);
+
   const [input, setInput] = useState("");
 
   function sendMessage(customMessage) {
     const text = String(customMessage || input).trim();
     if (!text) return;
 
-    if (hasAny(text, ["book dinner", "dinner reservation"])) {
+    if (hasAny(text, ["book dinner", "dinner reservation", "reserve dinner"])) {
       startBooking("dinner", {
-        requestNotes: "Dinner request from Ask Concierge. Guest wants help choosing or booking dinner.",
+        requestNotes:
+          "Dinner request from Ask Concierge. Guest wants help choosing or booking a local dinner option.",
       });
+      setInput("");
       return;
     }
 
-    if (hasAny(text, ["book ski", "ski rental", "ski rentals"])) {
+    if (hasAny(text, ["book ski", "ski rental", "ski rentals", "rent skis"])) {
       startBooking("ski-rentals", {
-        requestNotes: "Ski rental request from Ask Concierge. Guest wants ski or snowboard rental delivery.",
+        requestNotes:
+          "Ski rental request from Ask Concierge. Guest wants ski or snowboard rental delivery.",
       });
+      setInput("");
+      return;
+    }
+
+    if (
+      hasAny(text, [
+        "book shuttle",
+        "airport shuttle",
+        "transportation",
+        "ride from airport",
+      ])
+    ) {
+      startBooking("shuttle", {
+        requestNotes:
+          "Airport shuttle request from Ask Concierge. Guest needs transportation between DIA and Keystone.",
+      });
+      setInput("");
+      return;
+    }
+
+    if (hasAny(text, ["grocery", "groceries", "stock the fridge", "food stocked"])) {
+      startBooking("grocery", {
+        requestNotes:
+          "Grocery stocking request from Ask Concierge. Guest wants groceries, snacks, breakfast items, drinks, or essentials.",
+      });
+      setInput("");
       return;
     }
 
     const response = getConciergeResponse(text);
+
     setMessages((current) => [
       ...current,
       { role: "user", content: text },
       { role: "assistant", ...response },
     ]);
+
     setInput("");
   }
 
@@ -914,7 +1076,14 @@ function ConciergeScreen({ startBooking }) {
       </div>
 
       <div className="suggested-grid">
-        {["Where can we get Mexican food?", "Book dinner for me", "How do we get to the ski slopes?", "What is the Wi-Fi?", "Where do we park?", "Where is the hot tub?"].map((q) => (
+        {[
+          "Help me plan dinner tonight",
+          "How do we get to the ski slopes?",
+          "What should we do if we don’t ski?",
+          "Book airport shuttle help",
+          "What is the Wi-Fi?",
+          "Where do we park?",
+        ].map((q) => (
           <button key={q} onClick={() => sendMessage(q)} className="suggested-question">
             {q}
           </button>
@@ -925,11 +1094,17 @@ function ConciergeScreen({ startBooking }) {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={cx("chat-bubble", message.role === "user" ? "chat-user" : "chat-assistant")}
+            className={cx(
+              "chat-bubble",
+              message.role === "user" ? "chat-user" : "chat-assistant"
+            )}
           >
-            {message.title && message.role === "assistant" && <strong>{message.title}</strong>}
+            {message.title && message.role === "assistant" && (
+              <strong>{message.title}</strong>
+            )}
             {message.title && message.role === "assistant" ? "\n" : ""}
             {message.content}
+
             {message.actions?.length > 0 && (
               <div style={{ display: "grid", gap: 8, marginTop: 12 }}>
                 {message.actions.map((a) => renderAction(a, sendMessage))}
@@ -949,7 +1124,7 @@ function ConciergeScreen({ startBooking }) {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask about food, ski access, Wi-Fi, booking..."
+          placeholder="Ask about dinner, ski access, shuttles, Wi-Fi..."
         />
         <button type="submit" disabled={!input.trim()}>
           Send
@@ -961,7 +1136,9 @@ function ConciergeScreen({ startBooking }) {
 
 function BookScreen({ bookingSeed }) {
   const [selectedId, setSelectedId] = useState(bookingSeed?.serviceId || "dinner");
-  const selected = bookServices.find((service) => service.id === selectedId) || bookServices[0];
+
+  const selected =
+    bookServices.find((service) => service.id === selectedId) || bookServices[0];
 
   const [form, setForm] = useState({
     name: "",
@@ -980,6 +1157,7 @@ function BookScreen({ bookingSeed }) {
 
     setSelectedId(service.id);
     setSubmitted(false);
+
     setForm((current) => ({
       ...current,
       timing: bookingSeed?.timing || service.defaultTiming,
@@ -991,6 +1169,7 @@ function BookScreen({ bookingSeed }) {
   function selectService(service) {
     setSelectedId(service.id);
     setSubmitted(false);
+
     setForm((current) => ({
       ...current,
       timing: service.defaultTiming,
@@ -1008,183 +1187,131 @@ function BookScreen({ bookingSeed }) {
     setSubmitted(true);
   }
 
-  const progressItems = [
-    ["1", "Choose service"],
-    ["2", "Add details"],
-    ["3", "Send request"],
-  ];
+  const bookingCardStyle = {
+    border: "1px solid rgba(103,232,249,.22)",
+    borderRadius: 28,
+    background:
+      "linear-gradient(135deg, rgba(103,232,249,.13), rgba(96,165,250,.08), rgba(167,139,250,.13))",
+    padding: 18,
+    boxShadow: "0 18px 45px rgba(0,0,0,.22)",
+  };
+
+  const serviceChipStyle = (active) => ({
+    border: active
+      ? "1px solid rgba(103,232,249,.42)"
+      : "1px solid rgba(255,255,255,.12)",
+    borderRadius: 18,
+    padding: "12px 13px",
+    color: active ? "#020617" : "white",
+    background: active
+      ? "linear-gradient(90deg,#67e8f9,#a78bfa)"
+      : "rgba(255,255,255,.08)",
+    fontWeight: 950,
+    fontSize: 12,
+    textAlign: "left",
+    whiteSpace: "nowrap",
+  });
 
   return (
     <div className="stack">
       <div className="screen-intro">
-        <div className="eyebrow">Premium booking flow</div>
-        <h3>Book trusted local help.</h3>
+        <div className="eyebrow">Book Local</div>
+        <h3>Request trusted local help.</h3>
         <p style={{ color: "#cbd5e1", lineHeight: 1.55, marginBottom: 0 }}>
-          A guided request experience that turns guest intent into a clean,
-          trackable local lead.
+          A premium guest request flow for dinner help, ski rentals, shuttles,
+          groceries, activities, and property support.
         </p>
       </div>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: 8,
-      }}>
-        {progressItems.map(([number, label], index) => (
-          <div
-            key={label}
-            style={{
-              border: "1px solid rgba(103,232,249,.16)",
-              borderRadius: 16,
-              padding: "10px 8px",
-              background: index === 1 ? "rgba(103,232,249,.12)" : "rgba(255,255,255,.07)",
-              textAlign: "center",
-            }}
-          >
-            <div style={{
-              width: 24,
-              height: 24,
-              margin: "0 auto 6px",
-              borderRadius: 999,
-              display: "grid",
-              placeItems: "center",
-              background: index === 1 ? "linear-gradient(90deg,#67e8f9,#a78bfa)" : "rgba(255,255,255,.10)",
-              color: index === 1 ? "#020617" : "#cbd5e1",
-              fontSize: 12,
-              fontWeight: 950,
-            }}>
-              {number}
-            </div>
-            <div style={{ color: "#cbd5e1", fontSize: 10, fontWeight: 900 }}>
-              {label}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div style={miniCard}>
-        <div className="eyebrow">Selected request</div>
-
-        <div style={{
-          marginTop: 12,
-          padding: 16,
-          borderRadius: 22,
-          border: "1px solid rgba(103,232,249,.22)",
-          background:
-            "linear-gradient(135deg, rgba(103,232,249,.15), rgba(167,139,250,.12))",
-        }}>
-          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-            <div style={{ fontSize: 36 }}>{selected.icon}</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ color: "white", fontSize: 22, fontWeight: 950, letterSpacing: "-.045em" }}>
-                {selected.title}
+      <div style={bookingCardStyle}>
+        {!submitted ? (
+          <form onSubmit={submitRequest} style={{ display: "grid", gap: 14 }}>
+            <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <div
+                style={{
+                  width: 54,
+                  height: 54,
+                  borderRadius: 20,
+                  display: "grid",
+                  placeItems: "center",
+                  background: "rgba(255,255,255,.12)",
+                  fontSize: 30,
+                  flexShrink: 0,
+                }}
+              >
+                {selected.icon}
               </div>
-              <div style={{ marginTop: 5, color: "#cbd5e1", fontSize: 13, lineHeight: 1.45 }}>
-                {selected.subtitle}
+
+              <div style={{ flex: 1 }}>
+                <div className="eyebrow">Selected request</div>
+                <div
+                  style={{
+                    marginTop: 7,
+                    color: "white",
+                    fontSize: 24,
+                    fontWeight: 950,
+                    lineHeight: 1.05,
+                    letterSpacing: "-.055em",
+                  }}
+                >
+                  {selected.title}
+                </div>
+                <div
+                  style={{
+                    marginTop: 7,
+                    color: "#cbd5e1",
+                    fontSize: 13,
+                    lineHeight: 1.45,
+                  }}
+                >
+                  {selected.subtitle}
+                </div>
               </div>
-              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
-                <span style={{
-                  border: "1px solid rgba(103,232,249,.22)",
-                  borderRadius: 999,
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <div
+                style={{
+                  border: "1px solid rgba(103,232,249,.20)",
+                  borderRadius: 16,
+                  padding: "10px 12px",
                   color: "#cffafe",
-                  padding: "6px 9px",
+                  background: "rgba(103,232,249,.08)",
                   fontSize: 11,
                   fontWeight: 950,
-                }}>
-                  {selected.price}
-                </span>
-                <span style={{
-                  border: "1px solid rgba(167,139,250,.22)",
-                  borderRadius: 999,
+                }}
+              >
+                {selected.price}
+              </div>
+
+              <div
+                style={{
+                  border: "1px solid rgba(167,139,250,.20)",
+                  borderRadius: 16,
+                  padding: "10px 12px",
                   color: "#ddd6fe",
-                  padding: "6px 9px",
+                  background: "rgba(167,139,250,.08)",
                   fontSize: 11,
                   fontWeight: 950,
-                }}>
-                  {selected.highlight}
-                </span>
+                }}
+              >
+                {selected.highlight}
               </div>
             </div>
-          </div>
-        </div>
 
-        <div style={{ display: "grid", gap: 8, marginTop: 14 }}>
-          {selected.fields.map((field) => (
             <div
-              key={field}
               style={{
-                border: "1px solid rgba(103,232,249,.16)",
-                borderRadius: 14,
-                padding: "10px 12px",
-                color: "#cffafe",
-                background: "rgba(103,232,249,.07)",
-                fontSize: 12,
-                fontWeight: 850,
+                border: "1px solid rgba(255,255,255,.12)",
+                borderRadius: 20,
+                background: "rgba(2,6,23,.34)",
+                padding: 14,
+                color: "#cbd5e1",
+                fontSize: 13,
+                lineHeight: 1.55,
               }}
             >
-              Needed: {field}
-            </div>
-          ))}
-        </div>
-
-        <div style={{
-          marginTop: 14,
-          color: "#cbd5e1",
-          fontSize: 13,
-          lineHeight: 1.55,
-        }}>
-          <strong style={{ color: "white" }}>What happens next:</strong>{" "}
-          {selected.conciergePromise}
-        </div>
-      </div>
-
-      <div style={{ display: "grid", gap: 10 }}>
-        {bookServices.map((service) => (
-          <button
-            key={service.id}
-            onClick={() => selectService(service)}
-            style={{
-              border: "1px solid rgba(255,255,255,.12)",
-              borderRadius: 20,
-              background: selected.id === service.id ? "rgba(103,232,249,.14)" : "rgba(255,255,255,.07)",
-              padding: 14,
-              color: "white",
-              textAlign: "left",
-            }}
-          >
-            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-              <div style={{ fontSize: 26 }}>{service.icon}</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 950, fontSize: 15 }}>{service.title}</div>
-                <div style={{ marginTop: 4, color: "#94a3b8", fontSize: 12, lineHeight: 1.35 }}>
-                  {service.subtitle}
-                </div>
-              </div>
-              {selected.id === service.id && (
-                <div style={{
-                  color: "#020617",
-                  background: "linear-gradient(90deg,#67e8f9,#a78bfa)",
-                  borderRadius: 999,
-                  padding: "6px 9px",
-                  fontSize: 10,
-                  fontWeight: 950,
-                }}>
-                  Selected
-                </div>
-              )}
-            </div>
-          </button>
-        ))}
-      </div>
-
-      <div style={miniCard}>
-        {!submitted ? (
-          <form onSubmit={submitRequest} style={{ display: "grid", gap: 12 }}>
-            <div>
-              <div className="eyebrow">Request details</div>
-              <div style={{ color: "white", fontSize: 20, fontWeight: 950, marginTop: 8 }}>
-                Tell us what you need.
-              </div>
+              <strong style={{ color: "white" }}>What happens next:</strong>{" "}
+              {selected.conciergePromise}
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
@@ -1194,6 +1321,7 @@ function BookScreen({ bookingSeed }) {
                 onChange={(e) => update("name", e.target.value)}
                 placeholder="Guest name"
               />
+
               <input
                 style={fieldStyle}
                 value={form.phone}
@@ -1236,37 +1364,42 @@ function BookScreen({ bookingSeed }) {
               style={fieldStyle}
               value={form.groupSize}
               onChange={(e) => update("groupSize", e.target.value)}
-              placeholder="Group size, if helpful"
+              placeholder="Group size"
             />
 
             <textarea
               value={form.notes}
               onChange={(e) => update("notes", e.target.value)}
-              placeholder="Example: Dinner for 6 around 7 PM. Mexican or steakhouse."
+              placeholder="Tell us what you need."
               style={{
                 ...fieldStyle,
-                minHeight: 118,
+                minHeight: 122,
                 paddingTop: 12,
                 resize: "vertical",
                 lineHeight: 1.45,
               }}
             />
 
-            <div style={{
-              border: "1px solid rgba(103,232,249,.18)",
-              borderRadius: 18,
-              background: "rgba(103,232,249,.08)",
-              padding: 14,
-              color: "#cffafe",
-              fontSize: 13,
-              lineHeight: 1.5,
-            }}>
-              <strong>Demo note:</strong> In the live product, this request would
-              route to Peak Concierge, the property manager, or the correct local
-              vendor.
+            <div style={{ display: "grid", gap: 8 }}>
+              {selected.fields.map((field) => (
+                <div
+                  key={field}
+                  style={{
+                    border: "1px solid rgba(103,232,249,.14)",
+                    borderRadius: 14,
+                    padding: "9px 11px",
+                    color: "#cffafe",
+                    background: "rgba(103,232,249,.06)",
+                    fontSize: 12,
+                    fontWeight: 850,
+                  }}
+                >
+                  Helpful detail: {field}
+                </div>
+              ))}
             </div>
 
-            <button className="primary-action" type="submit" style={{ minHeight: 50 }}>
+            <button className="primary-action" type="submit" style={{ minHeight: 52 }}>
               Send concierge request
             </button>
           </form>
@@ -1274,28 +1407,40 @@ function BookScreen({ bookingSeed }) {
           <div
             style={{
               border: "1px solid rgba(34,197,94,.25)",
-              borderRadius: 22,
-              background: "rgba(34,197,94,.1)",
+              borderRadius: 24,
+              background: "rgba(34,197,94,.10)",
               padding: 18,
             }}
           >
-            <div style={{ color: "#bbf7d0", fontWeight: 950, fontSize: 22 }}>
-              Request ready ✓
+            <div style={{ fontSize: 36 }}>✅</div>
+            <div
+              style={{
+                marginTop: 8,
+                color: "#bbf7d0",
+                fontWeight: 950,
+                fontSize: 24,
+                letterSpacing: "-.045em",
+              }}
+            >
+              Request ready
             </div>
+
             <p style={{ color: "#dcfce7", fontSize: 14, lineHeight: 1.6 }}>
-              This is the moment Peak Concierge turns a guest question into a
-              trackable local request.
+              This is where Peak Concierge turns a guest need into a trackable
+              local request for the host, concierge team, or vendor partner.
             </p>
 
-            <div style={{
-              border: "1px solid rgba(255,255,255,.12)",
-              borderRadius: 18,
-              background: "rgba(2,6,23,.28)",
-              padding: 14,
-              color: "white",
-              fontSize: 13,
-              lineHeight: 1.75,
-            }}>
+            <div
+              style={{
+                border: "1px solid rgba(255,255,255,.12)",
+                borderRadius: 18,
+                background: "rgba(2,6,23,.28)",
+                padding: 14,
+                color: "white",
+                fontSize: 13,
+                lineHeight: 1.75,
+              }}
+            >
               <strong>Service:</strong> {selected.title}
               <br />
               <strong>Timing:</strong> {form.timing}
@@ -1312,10 +1457,7 @@ function BookScreen({ bookingSeed }) {
             </div>
 
             <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-              <button
-                className="primary-action"
-                onClick={() => setSubmitted(false)}
-              >
+              <button className="primary-action" onClick={() => setSubmitted(false)}>
                 Edit request
               </button>
               <button
@@ -1338,6 +1480,34 @@ function BookScreen({ bookingSeed }) {
           </div>
         )}
       </div>
+
+      <div>
+        <div
+          style={{
+            color: "#67e8f9",
+            fontSize: 11,
+            fontWeight: 950,
+            letterSpacing: ".18em",
+            textTransform: "uppercase",
+            marginBottom: 10,
+          }}
+        >
+          Change request type
+        </div>
+
+        <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }}>
+          {bookServices.map((service) => (
+            <button
+              key={service.id}
+              onClick={() => selectService(service)}
+              style={serviceChipStyle(selected.id === service.id)}
+            >
+              <span style={{ marginRight: 6 }}>{service.icon}</span>
+              {service.title.replace(" Help", "")}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -1350,7 +1520,8 @@ export default function App() {
   });
 
   function startBooking(serviceId = "dinner", source = {}) {
-    const service = bookServices.find((item) => item.id === serviceId) || bookServices[0];
+    const service =
+      bookServices.find((item) => item.id === serviceId) || bookServices[0];
 
     setBookingSeed({
       serviceId: service.id,
@@ -1374,9 +1545,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="header-note">
-          Demo property: Wild Irishman 1074
-        </div>
+        <div className="header-note">Demo property: Wild Irishman 1074</div>
       </header>
 
       <section className="demo-stage">
@@ -1394,6 +1563,7 @@ export default function App() {
           screen={screen}
           setScreen={setScreen}
           startBooking={startBooking}
+          bookingSeed={bookingSeed}
         />
 
         <div className="side-card">
@@ -1401,9 +1571,13 @@ export default function App() {
           <ul>
             <li>Turns a long rental guide into a premium mobile guest experience.</li>
             <li>Answers repetitive questions before guests text the host.</li>
-            <li>Helps guests book food, rides, groceries, ski rentals, and activities.</li>
+            <li>
+              Helps guests book food, rides, groceries, ski rentals, and activities.
+            </li>
             <li>Creates local partner revenue without adding host work.</li>
-            <li>Makes the property feel more luxury from the moment guests arrive.</li>
+            <li>
+              Makes the property feel more luxury from the moment guests arrive.
+            </li>
             <li>Turns guest intent into trackable requests and vendor leads.</li>
           </ul>
         </div>
